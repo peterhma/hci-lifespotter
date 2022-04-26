@@ -1,0 +1,126 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Species Name</title> <!--Placeholder-->
+	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
+  <link href="{% static 'coloring/vendors/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  
+  <style type="text/css">
+
+    .flex {
+      display: grid;
+      place-items: center;
+    }
+    
+    #card {
+      position: absolute;
+      top: 30%;
+      height: 100%;
+      width: 80%;
+      border-radius: 40px 40px 0px 0px;
+      background-color: #EDF8E9;
+      opacity: 0.8;
+      font-family: Merriweather;
+    }
+
+    #title {
+      margin-top: 20px;
+      font-size: 100px;
+    }
+
+    .contents {
+      margin-top: 20px;
+      font-size: 60px;
+    }
+
+    .heading {
+      color: #234110;
+    }
+
+    ul.no-bullets {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html {
+      background-image: url("https://tinyurl.com/colorful-bird");
+    }
+
+    .navbar {
+      min-height: 85px;
+      width:100%;
+
+    }
+
+    *{
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    .navbar-custom {
+      background-color: #719F1E;
+    }
+    
+  </style>
+  
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md py-3 navbar-light navbar-custom nav-fill">
+          <div class="container-fluid">
+            
+            <div class="col-md">
+             <button type="button" class="btn btn-outline-light btn-lg">
+               <h3 class="display-6"> < </h3>
+             </button>
+            </div>
+
+            <div class="col-md" align="center">
+              <h2 class="display-5 text-white">Species Name</h2>
+            </div>
+
+            <div class="col-md" align="right">
+              <button id="btnEdit" type="button" class="btn btn-outline-light btn-lg" state="unlock">
+                <i class="bi bi-check-circle-fill"></i>
+              </button>
+            </div>
+          </div>
+</nav>
+
+<div class='flex'>
+  <div id="card">
+    <div class="container">
+      <div class="row justify-content-center" id="title">
+        <div class="col text-center">Northern Cardinal</div>
+      </div>
+      <hr/>
+      <div class="row justify-content-center contents">
+        <div class="col text-center"><b class="heading">Scientific Name:</b> <br> Cardinalis cardinalis </div>
+      </div>
+      <div class="row justify-content-center contents">
+        <div class="col text-center"><b class="heading">Taxonomy:</b> 
+        <ul class="no-bullets">
+          <li>Kingdom: Animalia</li>
+          <li>Phylum: Chordata</li>
+          <li>Class: Aves</li>
+          <li>Order: Passeriformes</li>
+          <li>Family: Cardinalidae</li>
+        </ul>
+        </div>
+      </div>
+      <div class="row justify-content-center contents">
+        <div class="col text-center"><b class="heading">Description:</b> <br> Red, pointed beak, black covering </div>
+      </div>
+    </div>
+  </div>
+</div>  
+</body>
+</html>

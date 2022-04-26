@@ -1,0 +1,337 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Trip</title>
+	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
+  <link href="{% static 'coloring/vendors/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  
+  <link href="{% static 'coloring/vendors/datepicker/css/bootstrap.css' %}" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="{% static 'coloring/vendors/datepicker/js/bootstrap-datepicker.js' %}"></script>
+  
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+  <script 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBT0L8QkxrYT1W4mKtP_jAMZZeFTj0UH6M&callback=initMap"
+    defer
+  ></script>
+
+
+  
+  
+  <style type="text/css">
+    #myCanvas {
+      border: 1px solid black;
+    }
+
+    .navbar {
+      min-height: 85px;
+      width:100%;
+
+    }
+
+    *{
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    .navbar-custom {
+      background-color: #719F1E;
+    }
+
+    .container-padding {
+      padding-top: 20px;
+    }
+
+    .input-lg {
+      min-height: 100px;
+      font-size: 4rem;
+      font-weight: bold;
+      text-align: center;
+      border: 0;
+    }
+
+    .form-control-lg {
+      width: 80%;
+      min-height: 600px;
+      text-align: center;
+      align-items: center;
+      }
+
+    .input-group-text {
+      background-color: white;
+      font-weight: bold;
+      font-size: 2rem;
+      border: 0;
+    }
+
+    .input-sm {
+      border: 0;
+      min-height: 40px;
+      font-size: 2rem; 
+    }
+
+    input[type="text"][disabled], input[type="datetime-local"][disabled] {
+       background-color: #FFFFFF; 
+    }
+
+    .btn-white {
+      width: 100%;
+      height: 45%;
+      top: 35%;
+      position: relative;
+      opacity: .7;
+    }
+    #map {
+      height: 400px;
+      width: 100%;
+    }
+
+    #display-image{
+      width: 80%;
+      height: 600px;
+      background-color:rgb(247, 247, 247);
+    }
+
+  </style>
+  
+</head>
+  
+<body>
+    <div class="row">
+     
+        <nav class="navbar navbar-expand-md py-3 navbar-light navbar-custom nav-fill">
+          <div class="container-fluid">
+            
+            <div class="col-md">
+             <button type="button" class="btn btn-outline-light btn-lg">
+               <h3 class="display-6"> < </h3>
+             </button>
+            </div>
+
+            <div class="col-md" align="center">
+              <h2 class="display-5 text-white"> Sightings</h2>
+            </div>
+
+            <div class="col-md" align="right">
+              <button id="btnEdit" type="button" class="btn btn-outline-light btn-lg" state="unlock">
+                <i class="bi bi-check-circle-fill"></i>
+              </button>
+            </div>
+          </div>
+        </nav>
+
+   
+        <div class="container-fluid container-padding" >
+          <div class="col-md" align="center"  style="vertical-align: middle;">
+
+            <div id="display-image" style="vertical-align: middle;">
+             
+              <label class="btn btn-white" id="prompt">
+                <input type="file" style="display: none;" id="image-input">
+                <h1 class="display-1" >
+                  <i class="bi bi-camera"></i>
+                  <h1  class="display-6">Add an image</h1> 
+                </h1>
+                
+            </label>
+            </div>
+
+           
+
+          </div>
+        </div>
+  
+
+      <div class="container container-padding">
+        
+        <div class="input-group input-group-lg">
+          <h1><input type="text" class="form-control input-lg" id="sighting-input" placeholder="Unamed"></h1>
+        </div>
+
+      <div class="input-group mb-3" style="padding-top: 20px;">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="field-name">Taxonomy &ensp;</span>
+        </div>
+        <input type="text" class="form-control input-sm" placeholder="none assigned..." aria-label="Taxonomy" aria-describedby="field-name">
+      </div>
+
+      <div class="input-group mb-3" style="padding-top: 20px;">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="field-name">Date &ensp;</span>
+        </div>
+<!--           <input type="datetime-local" class="input-sm"  min="1900-01-01T00:00" max="2030-12-31T24:59"  aria-describedby="field-name"> -->
+         <input  type="text" placeholder="click to show datepicker"  id="pickyDate" aria-describedby="field-name"/>
+      </div>
+          
+
+      <div class="input-group mb-3" style="padding-top: 20px;">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="field-name">Location &ensp;</span>
+        </div>
+
+        <div id="map" aria-label="Location" aria-describedby="field-name"></div>
+
+      </div>
+
+      <div class="input-group mb-3" style="padding-top: 40px;">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="field-name">Notes &ensp;</span>
+        </div>
+        <textarea class="form-control" placeholder="add notes..." aria-label="Notes" aria-describedby="field-name"></textarea>
+      </div>
+
+  <script>
+    let map, infoWindow, pos, marker;
+
+    function initMap() {
+      // Try HTML5 geolocation.
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            pos = {
+              lat: +position.coords.latitude.toFixed(7), // must truncate
+              lng: +position.coords.longitude.toFixed(7),
+            };
+            marker = new google.maps.Marker({
+              position: pos,
+              map: map,
+              draggable:true,
+            });
+
+            map.setCenter(pos);
+            
+
+
+            var customPos = pos;
+            google.maps.event.addListener(marker, 'dragend', function (e) {
+              customPos = { lat: +e.latLng.lat().toFixed(3), lng: +e.latLng.lng().toFixed(3) };
+              console.log( "Lat: " + customPos.lat + " Lng: " + customPos.lng);
+            });
+
+            const centerControlDiv = document.createElement("div");
+            centerButton(centerControlDiv, map, customPos);
+            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
+            centerControlDiv.addEventListener("click", () => {
+                console.log(customPos.lat + " " + customPos.lng)
+                map.setCenter(customPos);
+                map.setZoom(16)
+            });
+          },
+          () => {
+            handleLocationError(true, infoWindow, map.getCenter());
+          }
+        );
+      } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+      }
+
+      map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 16,
+        mapTypeId: 'satellite',
+      });
+
+      function centerButton(controlDiv, map, position) {
+          // Set CSS for the control border.
+        const controlUI = document.createElement("div");
+
+        controlUI.style.backgroundColor = "#fff";
+        controlUI.style.border = "2px solid #fff";
+        controlUI.style.borderRadius = "3px";
+        controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+        controlUI.style.cursor = "pointer";
+        controlUI.style.marginTop = "8px";
+        controlUI.style.marginBottom = "22px";
+        controlUI.style.textAlign = "center";
+        controlUI.title = "Click to recenter the map";
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        const controlText = document.createElement("div");
+
+        controlText.style.color = "rgb(25,25,25)";
+        controlText.style.fontFamily = "Roboto,Arial,sans-serif";
+        controlText.style.fontSize = "16px";
+        controlText.style.lineHeight = "38px";
+        controlText.style.paddingLeft = "5px";
+        controlText.style.paddingRight = "5px";
+        controlText.innerHTML = "Center";
+        controlUI.appendChild(controlText);
+      }
+
+      infoWindow = new google.maps.InfoWindow();
+    }
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      infoWindow.setPosition(pos);
+      infoWindow.setContent(
+        browserHasGeolocation
+          ? "Error: The Geolocation service failed."
+          : "Error: Your browser doesn't support geolocation."
+      );
+      infoWindow.open(map);
+    }
+
+    window.initMap = initMap;
+
+    
+    $('#btnEdit').click(function() {
+      var bDisabled;
+      if (this.getAttribute("state") === "lock"){
+        this.setAttribute("state", "unlock")
+        this.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+        bDisabled = false;
+        marker.setDraggable(true);
+        document.querySelector("#prompt").style.display = 'block';
+        document.querySelector("#display-image").style.opacity = "0.7";
+      }
+      else {
+        this.setAttribute("state", "lock")
+        this.innerHTML = '<i class="bi bi-pencil-fill"></i>';
+        bDisabled = true;
+        marker.setDraggable(false);
+        document.querySelector("#prompt").style.display = 'none';
+        document.querySelector("#display-image").style.opacity = "1.0";
+      }
+      console.log(this.getAttribute("state"));
+      var inputs = document.getElementsByTagName("input"); 
+      for (var i = 0; i < inputs.length; i++) { 
+          inputs[i].disabled = bDisabled;
+      } 
+
+      var textareas = document.getElementsByTagName("textarea"); 
+      for (var i = 0; i < textareas.length; i++) { 
+          textareas[i].disabled = bDisabled;
+      }
+    });
+
+    const image_input = document.querySelector("#image-input");
+    image_input.addEventListener("change", function() {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        const uploaded_image = reader.result;
+        document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
+        document.querySelector("#display-image").style.opacity = ".4";
+      });
+      reader.readAsDataURL(this.files[0]);
+    });
+    
+
+    $(document).ready(function () {
+      $('#pickyDate').datepicker({
+          format: "dd/mm/yyyy"
+      });
+    });
+
+  </script>
+
+</body>
+</html>
+

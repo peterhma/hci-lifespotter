@@ -1,0 +1,319 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>LifeSpotter</title>
+  
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <style type="text/css">
+  
+	#viewchange {
+	
+		bottom: 50px;
+		left: 50%;
+		position: relative;
+		
+		text-align: center;
+		line-height: 50px;
+		font-size: 300%;
+
+		width: 100px;
+		height: 50px;
+		border-radius: 50px 50px 0 0;
+		background-color: white;
+		color: blue;
+		
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	
+	#trips {
+		width: 100%;
+		bottom: 0px;
+		position: absolute;
+		background-color: white;
+	}
+	
+	#triplist {
+		overflow:hidden;
+		overflow-y:scroll;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0px;
+	}
+	
+	@keyframes open {
+		from {height: 0px;}
+		to {height: 50%;}
+	}
+	
+	@keyframes close {
+		from {height: 50%;}
+		to {height: 0px;}
+	}
+	
+	.inittrips {
+		height: 0%;
+	}
+	
+	.opentrips {
+		animation-name: open;
+		animation-duration: 0.5s;
+		height: 50%;
+	}
+	
+	.closetrips {
+		animation-name: close;
+		animation-duration: 0.5s;
+		height: 0%;
+	}
+	
+	.subrow {
+		background-color: white;
+	
+		position: relative;
+		width: calc(100% - 60px - 6px);
+		height: 25.5px;
+		
+		border-style: solid;
+		border-color: gray;
+		display: inline-block;
+	}
+	
+	.subrowtxt {
+		text-align: center;
+		line-height: 24px;
+		font-size: 150%;
+	}
+	
+	.subrowbutt {
+		position: absolute;
+		right: -1px;
+		top: -1px;
+		
+		width: 50px;
+		height: 27px;
+		
+		border-width: 0 0 0 3px;
+		border-style: solid;
+		border-color: gray;
+		
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	
+	.rowimg {
+		float: left;
+		height: 60px;
+		width: 60px;
+	}
+  
+  </style>
+
+  
+</head>
+<body>
+
+	<div id="map" style="height:100%; width:100%"></div>
+	
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBT0L8QkxrYT1W4mKtP_jAMZZeFTj0UH6M&callback=initMap&v=weekly"
+      defer
+    ></script>
+
+
+	<div id="trips" class="inittrips">
+	<div id="viewchange">&#9650;</div>
+	<div id="triplist"> </span>
+	</div>
+	
+	<div id="info"></div>
+
+
+	<script>
+	
+	function entryDOM(id, top, bot, img, edit, del, width="400px") {
+		return '<div id="'+id+'" style="width: '+width+';">'+
+		'<img src="'+img+'" class="rowimg" onclick="'+edit+'">'+
+		'<div id="top-'+id+'" class="subrow" style="border-width: 3px 3px 3px 3px;">'+
+		'<span id="toptxt-'+id+'" class="subrowtxt">'+top+'</span>'+
+		'<button id="edit-'+id+'" class="subrowbutt" onclick="'+edit+'">&#9999;</span>'+
+		'</div>'+
+		'<div id="bot-'+id+'" class="subrow" style="border-width: 0 3px 3px 3px;">'+
+		'<span id="bottxt-'+id+'" class="subrowtxt">'+bot+'</span>'+
+		'<button id="del-'+id+'" class="subrowbutt" onclick="'+del+'">&#10060;</span>'+
+		'</div>'+
+		'</div>'
+	}
+	
+	var listopen = false;
+	
+	function viewchange() {
+		if(listopen) { //close the list
+			$("#trips").removeClass("inittrips opentrips").addClass("closetrips");
+			$("#viewchange").html("&#9650;");
+		} else { //open the list
+			$("#trips").removeClass("inittrips closetrips").addClass("opentrips");
+			$("#viewchange").html("&#9660;");
+		}
+		listopen = !listopen;
+	}
+	
+	$("#viewchange").click( viewchange );
+	
+	//TODO: fill out
+	function editsight(id) {
+		console.log("edit: "+id);
+	}
+	
+	function delsight(id) {
+		if(infowindow) infowindow.close();
+		infowindow = null;
+		markers[""+id].setMap(null);
+		delete markers[""+id];
+		
+		console.log("del: "+id);
+	}
+	
+	function edittrip(id) {
+		console.log("edit trip: "+id);
+	}
+	
+	function deltrip(id) {
+		
+		console.log("del trip: "+id);
+	}
+	
+	var nextrefresh = 0;
+	
+	var infowindow = null;
+	var map;
+	var markers = []
+	
+	function pin(sighting) {
+		const marker = new google.maps.Marker({
+			position: { lat: sighting.latitude, lng: sighting.longitude },
+			map: map
+		});
+		marker.addListener("click", (event) => {
+			nextref = Date.now()+500;
+		
+			if(infowindow) infowindow.close();
+		
+			infowindow = new google.maps.InfoWindow({
+				content: entryDOM("sighting-info", sighting.name, sighting.species,
+				"https://www.w3schools.com/html/pic_trulli.jpg",
+				"editsight("+sighting.id+")", "delsight("+sighting.id+")"),
+			});
+			infowindow.open({
+				anchor: marker,
+				map,
+				shouldFocus: false,
+			});
+		});
+		markers[sighting.id] = marker;
+	}
+	
+	//TODO: remove fullscreen
+	
+	// Initialize and add the map
+	function initMap() {
+		// The location of Uluru
+		const uluru = { lat: 15, lng: -20 };
+		// The map, centered at Uluru
+		map = new google.maps.Map(document.getElementById("map"), {
+			zoom: 4,
+			center: uluru,
+		});
+		  
+		google.maps.event.addListener(map, "bounds_changed", (event) => {
+			refresh();
+		});
+		  
+		// TODO: close lil window
+		google.maps.event.addListener(map, "click", (event) => {
+			//event.latLng
+			if(infowindow) infowindow.close();
+			infowindow = null;
+		});
+	}
+
+
+	window.initMap = initMap;
+	var sightings = [];
+	var trips = new Set();
+	
+	function addTrip(trip) {
+		$("#triplist").append(entryDOM(trip.id, trip.name, trip.desc, "https://www.w3schools.com/html/pic_trulli.jpg", "edittrip(" + trip.id + ")", "deltrip(" + trip.id + ")", "100%"));
+	}
+	
+	var timeout = null;
+	function refresh(timed=false) {
+	
+		//make it so you can only refresh periodically
+		if(timed) timeout = null;
+		const now = Date.now();
+		if(now < nextrefresh) {
+			if(!timed && timeout === null)
+				timeout = setTimeout(() => refresh(true), nextrefresh-now+1);
+			return;
+		}
+		nextrefresh = now+1000;
+		if(timeout) {
+			clearTimeout(timeout);
+			timeout = null;
+		}
+	
+		bounds = map.getBounds();
+		
+		//TODO: query db
+		console.log("sightings in: "+bounds);
+		sightings = [{latitude: 0, longitude: 0, id: 42069, name: "Ayyy", species: "Amongus Susus", trip: {name: "a trip", desc: "trippin", id: 69}}, {latitude: 20, longitude: -20, id: 69420, name: "Bee", species: "Gludius Maximus", trip: null}];
+		
+		/*if(infowindow) infowindow.close();
+		infowindow = null;*/
+		
+		for(var id in markers) {
+			if(!bounds.contains(markers[id].position)) {
+				markers[id].setMap(null);
+				delete markers[id];
+			}
+		}
+		
+		$("#triplist").html("");
+		for(var i=0; i<sightings.length; i++) {
+			const id = sightings[i].id;
+			if(!markers.hasOwnProperty(id))
+				pin(sightings[i]);
+				
+			if(sightings[i].trip) {
+				addTrip(sightings[i].trip);
+				addTrip(sightings[i].trip);
+				addTrip(sightings[i].trip);
+				addTrip(sightings[i].trip);
+				addTrip(sightings[i].trip);
+				addTrip(sightings[i].trip);
+				addTrip(sightings[i].trip);
+				addTrip(sightings[i].trip);
+				addTrip(sightings[i].trip);
+			}
+		}
+	}
+	
+	</script>
+
+
+</body>
