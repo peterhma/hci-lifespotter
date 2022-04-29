@@ -22,6 +22,44 @@
     .navbar-custom {
       background-color: #719F1E;
     }
+
+    #key-button {
+      height:fit-content;
+      width: 95%;
+      border-radius: 10px;
+      padding-top: 25px;
+      padding-bottom: 25px;
+      padding-left: 30px;
+      font-size: 50px;
+      box-shadow: 2px 2px 5px 1px #adafaa;
+    }
+
+    .row {
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    #ru_title {
+      font-size: 50px;
+      margin-top: 20px;
+    }
+
+    #searchbar {
+      font-size: 50px;
+      height: 100px;
+    }
+
+    .ru-card {
+      width: 100%;
+    }
+
+    .ru-ctitle {
+      font-size: 40px;
+    }
+
+    .ru-csub {
+      font-size: 30px;
+    }
     
   </style>
   
@@ -49,19 +87,30 @@
 <div class='container'>
   <div class="row">
     <div class="col" id="search">
-       <div class="active-cyan-3 active-cyan-4 mb-4">
-  <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-        </div>
+       <input class='form-control' type="text" id='searchbar' placeholder="Search Species">
     </div> 
   </div>
+  <hr/>
   <div class="row">
-    <div class="col" id="key-button">Species Key</div>
+    <div class="col bg-white" id="key-button">Species Key</div>
   </div>
   <div class="row">
     <div class="col" id="ru_title">Recently Used</div>
   </div>
   <div class="row">
-    <div class="col ru_card">Northern Cardinal</div>
+    <div class="card ru-card">
+      <div class='row no-gutter' style="padding: 0px;">
+        <div class="col-3">
+          <img class="card-img" src="https://tinyurl.com/colorful-bird" alt="Suresh Dasari Card">
+        </div>
+        <div class="col">
+        <div class="card-body">
+          <h5 class="card-title ru-ctitle">Northern Cardinal</h5>
+          <p class="card-text ru-csub"><i>Cardinalis cardinalis</i></p>
+        </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>  
  

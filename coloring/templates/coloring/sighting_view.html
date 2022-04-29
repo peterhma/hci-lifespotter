@@ -11,8 +11,11 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
   
-  <link href="{% static 'coloring/vendors/datepicker/css/bootstrap.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'coloring/vendors/datepicker/css/datepicker.css' %}" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="{% static 'coloring/vendors/datepicker/js/bootstrap-datepicker.js' %}"></script>
+
+  <link href="{% static 'coloring/vendors/timepicker/css/bootstrap-timepicker.css' %}" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="{% static 'coloring/vendors/timepicker/js/bootstrap-timepicker.js' %}"></script>
   
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
@@ -32,7 +35,17 @@
     .navbar {
       min-height: 85px;
       width:100%;
+      top: 0; 
+      position: fixed;
+      background-color: #719F1E;
+      overflow: hidden;
 
+    }
+
+    .container {
+      width: 95%;
+
+      text-align: center;
     }
 
     *{
@@ -41,9 +54,10 @@
       margin: 0;
     }
 
-    .navbar-custom {
-      background-color: #719F1E;
+    .main{
+      margin-top: 105px;
     }
+
 
     .container-padding {
       padding-top: 20px;
@@ -78,7 +92,9 @@
     }
 
     input[type="text"][disabled], input[type="datetime-local"][disabled] {
-       background-color: #FFFFFF; 
+      background-color: #FFFFFF; 
+      color: black; 
+      opacity: 1;
     }
 
     .btn-white {
@@ -88,15 +104,17 @@
       position: relative;
       opacity: .7;
     }
+    
     #map {
-      height: 400px;
+      height: 600px;
       width: 100%;
     }
 
     #display-image{
-      width: 80%;
+      width: 95%;
       height: 600px;
       background-color:rgb(247, 247, 247);
+      position: relative
     }
 
   </style>
@@ -104,9 +122,9 @@
 </head>
   
 <body>
-    <div class="row">
-     
-        <nav class="navbar navbar-expand-md py-3 navbar-light navbar-custom nav-fill">
+
+      
+        <nav class="navbar navbar-expand-md py-3 navbar-light nav-fill">
           <div class="container-fluid">
             
             <div class="col-md">
@@ -127,47 +145,56 @@
           </div>
         </nav>
 
-   
-        <div class="container-fluid container-padding" >
+   <div class="main">
+        <div class="container-padding" >
           <div class="col-md" align="center"  style="vertical-align: middle;">
 
             <div id="display-image" style="vertical-align: middle;">
-             
+      
               <label class="btn btn-white" id="prompt">
                 <input type="file" style="display: none;" id="image-input">
                 <h1 class="display-1" >
                   <i class="bi bi-camera"></i>
                   <h1  class="display-6">Add an image</h1> 
                 </h1>
-                
             </label>
             </div>
-
-           
-
           </div>
         </div>
   
 
-      <div class="container container-padding">
-        
+      <div class="container container-padding col-md">
+   
         <div class="input-group input-group-lg">
-          <h1><input type="text" class="form-control input-lg" id="sighting-input" placeholder="Unamed"></h1>
+          <h1>
+            <input type="text" class="form-control input-lg" id="input-sighting" placeholder="Unamed" value="{{name}}">
+          </h1>
         </div>
 
       <div class="input-group mb-3" style="padding-top: 20px;">
         <div class="input-group-prepend">
           <span class="input-group-text" id="field-name">Taxonomy &ensp;</span>
         </div>
-        <input type="text" class="form-control input-sm" placeholder="none assigned..." aria-label="Taxonomy" aria-describedby="field-name">
+        <input type="text" class="form-control input-sm" id = "input-taxonomy" placeholder="Fill in or search..." aria-label="Taxonomy" aria-describedby="field-name" value="{{species}}">
+        
+        <div class="input-group-append">
+          <button  id="btnSearch" class="btn btn-light" style ="height: 85%; top: 10%" type="button"><i class="bi bi-search"></i></button>
+        </div>
+        
       </div>
 
       <div class="input-group mb-3" style="padding-top: 20px;">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="field-name">Date &ensp;</span>
+          <span class="input-group-text" id="field-name">Date  &ensp;</span>
         </div>
-<!--           <input type="datetime-local" class="input-sm"  min="1900-01-01T00:00" max="2030-12-31T24:59"  aria-describedby="field-name"> -->
-         <input  type="text" placeholder="click to show datepicker"  id="pickyDate" aria-describedby="field-name"/>
+         <input type="text" placeholder="Choose date"  id = "input-date"  aria-describedby="field-name" style="font-size: x-large;"/>
+      </div>
+
+      <div class="input-group mb-3" style="padding-top: 20px;">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="field-name">Time &ensp;</span>
+          </div>
+        <input type="text" placeholder="Choose time" id = "input-time" style="font-size: x-large;">
       </div>
           
 
@@ -176,97 +203,134 @@
           <span class="input-group-text" id="field-name">Location &ensp;</span>
         </div>
 
-        <div id="map" aria-label="Location" aria-describedby="field-name"></div>
+        <div id="map" aria-label="Location" id = "input-location" aria-describedby="field-name"></div>
 
       </div>
 
       <div class="input-group mb-3" style="padding-top: 40px;">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="field-name">Notes &ensp;</span>
+        <div class="input-group-prepend" >
+          <span class="input-group-text" id="field-name" >Notes &ensp;</span>
         </div>
-        <textarea class="form-control" placeholder="add notes..." aria-label="Notes" aria-describedby="field-name"></textarea>
+        <textarea class="form-control" style= "font-size: 1.5rem;" id = "input-notes"  placeholder="add notes..." aria-label="Notes" aria-describedby="field-name">{{notes}}</textarea>
       </div>
+
+      <div class="row" style="padding-top: 50px;">
+        <div class="col-12" align="center">
+          <div id="btnDelete" class="btn btn-light" style="display: block; font-size: 1.5rem"> <i class="bi bi-trash3-fill"></i> Delete sighting</div>
+        </div>
+      </div>
+
+  </div>
 
   <script>
     let map, infoWindow, pos, marker;
+    
+    const centerControlDiv = document.createElement("div");
+    newButton(centerControlDiv, "Center");
 
+    const locateControlDiv = document.createElement("div");
+    newButton(locateControlDiv, "Current");
+    
+
+    function newButton(controlDiv, text) {
+        // Set CSS for the control border.
+      const controlUI = document.createElement("div");
+
+      controlUI.style.backgroundColor = "#fff";
+      controlUI.style.border = "2px solid #fff";
+      controlUI.style.borderRadius = "3px";
+      controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+      controlUI.style.cursor = "pointer";
+      controlUI.style.marginTop = "8px";
+      controlUI.style.marginBottom = "22px";
+      controlUI.style.textAlign = "center";
+      controlUI.title = "Click to recenter the map";
+      controlDiv.appendChild(controlUI);
+
+      // Set CSS for the control interior.
+      const controlText = document.createElement("div");
+
+      controlText.style.color = "rgb(25,25,25)";
+      controlText.style.fontFamily = "Roboto,Arial,sans-serif";
+      controlText.style.fontSize = "16px";
+      controlText.style.lineHeight = "38px";
+      controlText.style.paddingLeft = "5px";
+      controlText.style.paddingRight = "5px";
+      controlText.innerHTML = text;
+      controlUI.appendChild(controlText);
+    }
+
+  
     function initMap() {
       // Try HTML5 geolocation.
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
+       
+        if (navigator.geolocation) {
+          
+          var isDraggable;
+          if (!{{first_edit}}) { // already edited before, no need to grab user's curr location
             pos = {
-              lat: +position.coords.latitude.toFixed(7), // must truncate
-              lng: +position.coords.longitude.toFixed(7),
+              lat: +{{latitude}}.toFixed(7), // must truncate
+              lng: +{{longitude}}.toFixed(7),
             };
-            marker = new google.maps.Marker({
-              position: pos,
-              map: map,
-              draggable:true,
-            });
-
-            map.setCenter(pos);
-            
-
-
-            var customPos = pos;
-            google.maps.event.addListener(marker, 'dragend', function (e) {
-              customPos = { lat: +e.latLng.lat().toFixed(3), lng: +e.latLng.lng().toFixed(3) };
-              console.log( "Lat: " + customPos.lat + " Lng: " + customPos.lng);
-            });
-
-            const centerControlDiv = document.createElement("div");
-            centerButton(centerControlDiv, map, customPos);
-            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
-            centerControlDiv.addEventListener("click", () => {
-                console.log(customPos.lat + " " + customPos.lng)
-                map.setCenter(customPos);
-                map.setZoom(16)
-            });
-          },
-          () => {
-            handleLocationError(true, infoWindow, map.getCenter());
+           isDraggable = true;
           }
-        );
+          else {
+            navigator.geolocation.getCurrentPosition(
+            (position) => {
+              pos = {
+                lat: +position.coords.latitude.toFixed(7), // must truncate
+                lng: +position.coords.longitude.toFixed(7),
+              };
+            }, () => {
+                handleLocationError(true, infoWindow, map.getCenter());
+              }
+            );
+            isDraggable = false;
+          }
+
+          marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            draggable: isDraggable,
+          });
+      
+          console.log("NEW\n" + pos.lat + ", " + pos.lng)
+          map.setCenter(pos);
+          
+          var customPos = pos;
+          google.maps.event.addListener(marker, 'dragend', function (e) {
+            customPos = { lat: +e.latLng.lat().toFixed(3), lng: +e.latLng.lng().toFixed(3) };
+            console.log( "Lat: " + customPos.lat + " Lng: " + customPos.lng);
+          });
+  
+       
+          map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
+          map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(locateControlDiv);
+          
+          centerControlDiv.addEventListener("click", () => {
+              console.log(customPos.lat + " " + customPos.lng)
+              map.setCenter(customPos);
+              map.setZoom(16);
+          });
+  
+          locateControlDiv.addEventListener("click", () => {
+              console.log(pos.lat + " " + pos.lng)
+              marker.setPosition(pos);
+              map.setCenter(pos);
+              pos = customPos;
+              map.setZoom(16);
+          });
+      
       } else {
         // Browser doesn't support Geolocation
         handleLocationError(false, infoWindow, map.getCenter());
       }
 
       map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: {{latitude}}, lng: {{longitude}} },
         zoom: 16,
         mapTypeId: 'satellite',
       });
-
-      function centerButton(controlDiv, map, position) {
-          // Set CSS for the control border.
-        const controlUI = document.createElement("div");
-
-        controlUI.style.backgroundColor = "#fff";
-        controlUI.style.border = "2px solid #fff";
-        controlUI.style.borderRadius = "3px";
-        controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
-        controlUI.style.cursor = "pointer";
-        controlUI.style.marginTop = "8px";
-        controlUI.style.marginBottom = "22px";
-        controlUI.style.textAlign = "center";
-        controlUI.title = "Click to recenter the map";
-        controlDiv.appendChild(controlUI);
-
-        // Set CSS for the control interior.
-        const controlText = document.createElement("div");
-
-        controlText.style.color = "rgb(25,25,25)";
-        controlText.style.fontFamily = "Roboto,Arial,sans-serif";
-        controlText.style.fontSize = "16px";
-        controlText.style.lineHeight = "38px";
-        controlText.style.paddingLeft = "5px";
-        controlText.style.paddingRight = "5px";
-        controlText.innerHTML = "Center";
-        controlUI.appendChild(controlText);
-      }
-
-      infoWindow = new google.maps.InfoWindow();
     }
 
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -290,6 +354,9 @@
         bDisabled = false;
         marker.setDraggable(true);
         document.querySelector("#prompt").style.display = 'block';
+        document.querySelector("#btnDelete").style.display = 'block';
+        document.querySelector("#btnSearch").style.display = 'block';
+        locateControlDiv.style.display = 'block';
         document.querySelector("#display-image").style.opacity = "0.7";
       }
       else {
@@ -298,6 +365,9 @@
         bDisabled = true;
         marker.setDraggable(false);
         document.querySelector("#prompt").style.display = 'none';
+        document.querySelector("#btnDelete").style.display = 'none';
+        document.querySelector("#btnSearch").style.display = 'none';
+        locateControlDiv.style.display = 'none';
         document.querySelector("#display-image").style.opacity = "1.0";
       }
       console.log(this.getAttribute("state"));
@@ -310,6 +380,8 @@
       for (var i = 0; i < textareas.length; i++) { 
           textareas[i].disabled = bDisabled;
       }
+
+      document.getElementsByTagName("textarea")
     });
 
     const image_input = document.querySelector("#image-input");
@@ -322,13 +394,62 @@
       });
       reader.readAsDataURL(this.files[0]);
     });
-    
+  
+    d = "{{date|safe}}".split("-");
+    t = "{{time|safe}}".split(":");
 
-    $(document).ready(function () {
-      $('#pickyDate').datepicker({
-          format: "dd/mm/yyyy"
+    
+    date = new Date(d[0], d[1] - 1 , d[2], t[0], t[1], t[2]);
+
+    
+    $('#input-date').datepicker({ 
+        format: "mm/dd/yyyy",
+    }).datepicker("setValue", date);
+
+    $('#input-time').timepicker("setTime", new Date(date.getTime()));
+   
+    function save() {
+
+      //Must change format of date and time before pushing to db
+      d = $("#input-date").val().split("/")
+      date = `${d[2]}-${d[0]}-${d[1]}`
+
+      t = $("#input-time").val().split(/:| /) 
+      t[0] = (t[2] == "PM") ? `${parseInt(t[0], 10) + 12}` : t[0]
+      time = `${t[0]}:${t[1]}:00.000000`
+
+  
+      var data_to_send = {
+        "name": $("#input-sighting").val(),
+        "species": $("#input-taxonomy").val(),
+        "date": date,
+        "time": time,
+        "latitude": marker.getPosition().lat(),
+        "longitude": marker.getPosition().lng(),
+        "notes": $("#input-notes").val(),
+        "first_edit": 0.
+      };
+
+      // This ajax request sends a POST request to the server
+      // https://api.jquery.com/jquery.ajax/
+
+      var authorname = "{{author.name|safe}}"
+      var id = "{{id|safe}}"
+      console.log(id)
+      $.ajax({
+        type: "POST",
+        url: "/sighting/" + authorname + "/" + id + "/",
+        data: JSON.stringify(data_to_send),
+        success: function (response) {
+          // prints the response from the server
+        }
       });
-    });
+    }
+    
+     $('#btnEdit').on("click", function(){
+        save()
+      });
+
 
   </script>
 

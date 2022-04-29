@@ -1,10 +1,9 @@
-{% load static %}
-
-<!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>LifeSpotter</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
   
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -81,8 +80,8 @@
 		background-color: white;
 	
 		position: relative;
-		width: calc(100% - 60px - 6px);
-		height: 25.5px;
+		width: calc(100% - 60px);
+		height: 30px;
 		
 		border-style: solid;
 		border-color: gray;
@@ -101,7 +100,7 @@
 		top: -1px;
 		
 		width: 50px;
-		height: 27px;
+		height: 30px;
 		
 		border-width: 0 0 0 3px;
 		border-style: solid;
@@ -120,15 +119,103 @@
 		height: 60px;
 		width: 60px;
 	}
+
+  #map {
+    width: 100%;
+    height: calc(100% - 92px);
+  }
+
+    body {
+      overflow: hidden;
+    }
   
   </style>
 
+
+  <style type="text/css">
+  
+	    .navbar {
+      min-height: 85px;
+      width:100%;
+
+    }
+	
+	  *{
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    .navbar-custom {
+      background-color: #719F1E;
+    }
+
+    .container-padding {
+      padding-top: 20px;
+    }
+
+    .input-lg {
+      min-height: 100px;
+      font-size: 4rem;
+      font-weight: bold;
+      text-align: center;
+      border: 0;
+    }
+
+    .form-control-lg {
+      width: 80%;
+      min-height: 600px;
+      text-align: center;
+      align-items: center;
+      }
+
+    .input-group-text {
+      background-color: white;
+      font-weight: bold;
+      font-size: 2rem;
+      border: 0;
+    }
+
+    .input-sm {
+      border: 0;
+      min-height: 40px;
+      font-size: 2rem; 
+    }
+
+    .btn-white {
+      position: relative;
+      width: 100%;
+      top: 45%;
+    }
+  
+  </style>
   
 </head>
 <body>
 
-	<div id="map" style="height:100%; width:100%"></div>
-	
+    <nav class="navbar navbar-expand-md py-3 navbar-light navbar-custom nav-fill">
+          <div class="container-fluid">
+            
+            <div class="col-md">
+             <button type="button" class="btn btn-outline-light btn-lg">
+               <h3 class="display-6"> < </h3>
+             </button>
+            </div>
+
+            <div class="col-md" align="center">
+              <h2 class="display-5 text-white"> LifeSpotter</h2>
+            </div>
+
+            <div class="col-md" align="right">
+              <button id="btnEdit" type="button" class="btn btn-outline-light btn-lg" state="unlock">
+                <i class="bi bi-check-circle-fill"></i>
+              </button>
+            </div>
+          </div>
+        </nav>
+
+	<div id="map"></div>
+  
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBT0L8QkxrYT1W4mKtP_jAMZZeFTj0UH6M&callback=initMap&v=weekly"
       defer
@@ -145,16 +232,18 @@
 
 	<script>
 	
-	function entryDOM(id, top, bot, img, edit, del, width="400px") {
-		return '<div id="'+id+'" style="width: '+width+';">'+
-		'<img src="'+img+'" class="rowimg" onclick="'+edit+'">'+
+	function entryDOM(id, top, bot, img, click, edit, del, width="400px") {
+		return '<div id="'+id+'" style="width: '+width+';" onclick="'+click+'">'+
+		'<img src="'+img+'" class="rowimg">'+
 		'<div id="top-'+id+'" class="subrow" style="border-width: 3px 3px 3px 3px;">'+
 		'<span id="toptxt-'+id+'" class="subrowtxt">'+top+'</span>'+
-		'<button id="edit-'+id+'" class="subrowbutt" onclick="'+edit+'">&#9999;</span>'+
+		'<button id="edit-'+id+'" class="subrowbutt" onclick="'+
+    edit+';event.stopPropagation()">&#9999;</span>'+
 		'</div>'+
 		'<div id="bot-'+id+'" class="subrow" style="border-width: 0 3px 3px 3px;">'+
 		'<span id="bottxt-'+id+'" class="subrowtxt">'+bot+'</span>'+
-		'<button id="del-'+id+'" class="subrowbutt" onclick="'+del+'">&#10060;</span>'+
+		'<button id="del-'+id+'" class="subrowbutt" onclick="'+
+      del+';event.stopPropagation()">&#10060;</span>'+
 		'</div>'+
 		'</div>'
 	}
@@ -175,6 +264,12 @@
 	$("#viewchange").click( viewchange );
 	
 	//TODO: fill out
+
+  function dosight(id) {
+    console.log("do: "+id);
+    window.location.href = "/sighting/author/"+id;
+  }
+    
 	function editsight(id) {
 		console.log("edit: "+id);
 	}
@@ -187,6 +282,10 @@
 		
 		console.log("del: "+id);
 	}
+
+  function dotrip(id) {
+    console.log("do trip: "+id);
+  }
 	
 	function edittrip(id) {
 		console.log("edit trip: "+id);
@@ -216,7 +315,9 @@
 			infowindow = new google.maps.InfoWindow({
 				content: entryDOM("sighting-info", sighting.name, sighting.species,
 				"https://www.w3schools.com/html/pic_trulli.jpg",
-				"editsight("+sighting.id+")", "delsight("+sighting.id+")"),
+				"dosight("+sighting.id+")",
+        "editsight("+sighting.id+")",
+        "delsight("+sighting.id+")"),
 			});
 			infowindow.open({
 				anchor: marker,
@@ -257,7 +358,7 @@
 	var trips = new Set();
 	
 	function addTrip(trip) {
-		$("#triplist").append(entryDOM(trip.id, trip.name, trip.desc, "https://www.w3schools.com/html/pic_trulli.jpg", "edittrip(" + trip.id + ")", "deltrip(" + trip.id + ")", "100%"));
+		$("#triplist").append(entryDOM(trip.id, trip.name, trip.desc, "https://www.w3schools.com/html/pic_trulli.jpg", "dotrip(" + trip.id + ")", "edittrip(" + trip.id + ")", "deltrip(" + trip.id + ")", "100%"));
 	}
 	
 	var timeout = null;
@@ -317,3 +418,4 @@
 
 
 </body>
+</html>
