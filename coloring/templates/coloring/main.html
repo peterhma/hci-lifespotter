@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -12,19 +13,19 @@
   
 	#viewchange {
 	
-		bottom: 50px;
-		left: 50%;
+		bottom: 125px;
+		left: calc( 50% - 125px );
 		position: relative;
-		
-		text-align: center;
-		line-height: 50px;
-		font-size: 300%;
 
-		width: 100px;
-		height: 50px;
-		border-radius: 50px 50px 0 0;
+		width: 250px;
+		height: 125px;
+		border-radius: 125px 125px 0 0;
 		background-color: white;
 		color: blue;
+
+    text-align: center;
+		line-height: 125px;
+		font-size: 800%;
 		
 		-webkit-touch-callout: none;
 		-webkit-user-select: none;
@@ -119,13 +120,15 @@
 		height: 60px;
 		width: 60px;
 	}
-
+    
   #map {
     width: 100%;
-    height: calc(100% - 92px);
+    height: calc( 100% - 92px );
   }
 
     body {
+      width: 100%;
+      height: 100vh;
       overflow: hidden;
     }
   
@@ -197,8 +200,9 @@
           <div class="container-fluid">
             
             <div class="col-md">
-             <button type="button" class="btn btn-outline-light btn-lg">
-               <h3 class="display-6"> < </h3>
+             <button type="button" class="btn btn-outline-light btn-lg"
+               onclick = "newtrip()">
+               <h3 class="display-6"> &#128193; </h3>
              </button>
             </div>
 
@@ -207,8 +211,9 @@
             </div>
 
             <div class="col-md" align="right">
-              <button id="btnEdit" type="button" class="btn btn-outline-light btn-lg" state="unlock">
-                <i class="bi bi-check-circle-fill"></i>
+              <button id="btnEdit" type="button" class="btn btn-outline-light btn-lg" state="unlock"
+                onclick = "newsighting()">
+                <h3 class="display-6"> + </h3>
               </button>
             </div>
           </div>
@@ -262,23 +267,63 @@
 	}
 	
 	$("#viewchange").click( viewchange );
-	
+
+  function newsighting() {
+    $.ajax({
+        type: "POST",
+        url: "/sighting/{{author.name}}/" + "-1/",
+        data: JSON.stringify({}),
+        success: function (response) {
+          // prints the response from the server
+          console.log("AJAX " + response)
+          window.location.href = "https://group-final-project-clean-2-uthci.uthci.repl.co/sighting/{{author.name}}/" + response + "/"
+ 
+        }
+    });
+  }
+
+  function newtrip() {
+    $.ajax({
+        type: "POST",
+        url: "/trip/{{author.name}}/" + "-1/",
+        data: JSON.stringify({}),
+        success: function (response) {
+          // prints the response from the server
+          console.log("AJAX " + response)
+          window.location.href = "https://group-final-project-clean-2-uthci.uthci.repl.co/trip/{{author.name}}/" + response + "/"
+ 
+        }
+    });
+  }
+    
 	//TODO: fill out
 
   function dosight(id) {
     console.log("do: "+id);
-    window.location.href = "/sighting/author/"+id;
+    window.location.href = "/sighting/{{author.name}}/"+id;
   }
     
 	function editsight(id) {
-		console.log("edit: "+id);
+		dosight(id);
 	}
 	
 	function delsight(id) {
-		if(infowindow) infowindow.close();
-		infowindow = null;
-		markers[""+id].setMap(null);
-		delete markers[""+id];
+
+    if(!confirm("Are you sure you want to delete this sighting?"))
+      return;
+    
+    var authorname = "{{author.name|safe}}"
+    $.ajax({
+      type: "POST",
+      url: "/sighting/" + authorname + "/" + id + "/",
+      data:  JSON.stringify({"delete": null}),
+      success: function (response) {
+          if(infowindow) infowindow.close();
+      		infowindow = null;
+      		markers[""+id].setMap(null);
+      		delete markers[""+id];
+        }
+    });
 		
 		console.log("del: "+id);
 	}
@@ -292,7 +337,8 @@
 	}
 	
 	function deltrip(id) {
-		
+    $("#trip-"+trip.id).remove();
+    
 		console.log("del trip: "+id);
 	}
 	
@@ -311,10 +357,10 @@
 			nextref = Date.now()+500;
 		
 			if(infowindow) infowindow.close();
-		
+
 			infowindow = new google.maps.InfoWindow({
 				content: entryDOM("sighting-info", sighting.name, sighting.species,
-				"https://www.w3schools.com/html/pic_trulli.jpg",
+				sighting.image,
 				"dosight("+sighting.id+")",
         "editsight("+sighting.id+")",
         "delsight("+sighting.id+")"),
@@ -332,6 +378,8 @@
 	
 	// Initialize and add the map
 	function initMap() {
+    //$("map").height(100);
+    
 		// The location of Uluru
 		const uluru = { lat: 15, lng: -20 };
 		// The map, centered at Uluru
@@ -344,7 +392,6 @@
 			refresh();
 		});
 		  
-		// TODO: close lil window
 		google.maps.event.addListener(map, "click", (event) => {
 			//event.latLng
 			if(infowindow) infowindow.close();
@@ -354,11 +401,10 @@
 
 
 	window.initMap = initMap;
-	var sightings = [];
 	var trips = new Set();
 	
-	function addTrip(trip) {
-		$("#triplist").append(entryDOM(trip.id, trip.name, trip.desc, "https://www.w3schools.com/html/pic_trulli.jpg", "dotrip(" + trip.id + ")", "edittrip(" + trip.id + ")", "deltrip(" + trip.id + ")", "100%"));
+	function addTrip(trip) { //TODO: real image
+		$("#triplist").append(entryDOM("trip-"+trip.id, trip.name, trip.desc, "https://www.w3schools.com/html/pic_trulli.jpg", "dotrip(" + trip.id + ")", "edittrip(" + trip.id + ")", "deltrip(" + trip.id + ")", "100%"));
 	}
 	
 	var timeout = null;
@@ -379,40 +425,53 @@
 		}
 	
 		bounds = map.getBounds();
-		
-		//TODO: query db
-		console.log("sightings in: "+bounds);
-		sightings = [{latitude: 0, longitude: 0, id: 42069, name: "Ayyy", species: "Amongus Susus", trip: {name: "a trip", desc: "trippin", id: 69}}, {latitude: 20, longitude: -20, id: 69420, name: "Bee", species: "Gludius Maximus", trip: null}];
+
+    data_to_send = {
+      "north": bounds.getNorthEast().lat(),
+      "south": bounds.getSouthWest().lat(),
+      "east":  bounds.getNorthEast().lng(),
+      "west":  bounds.getSouthWest().lng()
+    }
+    
+    $.ajax({
+        type: "POST",
+        url: "/main/{{author.name}}/",
+        data: JSON.stringify(data_to_send),
+        success: function (response) {
+          console.log("downloaded sightings in" + bounds);
+          sightings = JSON.parse(response);
+          console.log(response);
+          pinSightings(bounds, sightings);
+        }
+      });
 		
 		/*if(infowindow) infowindow.close();
 		infowindow = null;*/
-		
-		for(var id in markers) {
+	}
+
+  function pinSightings(bounds, sightings) {
+
+    //TODO: fix race condition if other tab open
+    for(var id in markers) {
 			if(!bounds.contains(markers[id].position)) {
 				markers[id].setMap(null);
 				delete markers[id];
 			}
 		}
-		
+
+    tripids = new Set()
 		$("#triplist").html("");
 		for(var i=0; i<sightings.length; i++) {
 			const id = sightings[i].id;
 			if(!markers.hasOwnProperty(id))
 				pin(sightings[i]);
 				
-			if(sightings[i].trip) {
+			if(sightings[i].trip && !tripids.has(sightings[i].trip.id)) {
 				addTrip(sightings[i].trip);
-				addTrip(sightings[i].trip);
-				addTrip(sightings[i].trip);
-				addTrip(sightings[i].trip);
-				addTrip(sightings[i].trip);
-				addTrip(sightings[i].trip);
-				addTrip(sightings[i].trip);
-				addTrip(sightings[i].trip);
-				addTrip(sightings[i].trip);
+        tripids.add(sightings[i].trip.id);
 			}
 		}
-	}
+  }
 	
 	</script>
 

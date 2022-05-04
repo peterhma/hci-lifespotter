@@ -1,0 +1,162 @@
+[
+    {
+        "name": "Lane Snapper",
+        "desc": "Regulated nongame species - see bag & size limitsColoration of the lane snapper varies from rosy-red to light olivaceous.  There are horizontal yellow stripes on the side, although these may be masked by horizontal blotching.  A large distinguishing maroon or dark eye-sized spot lies on both sides just below the dorsal (top) fin.  The iris of the eye is red and the tail is reddish inged with black.",
+        "sciname": "Lutjanus synagris",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Lutjanus_synagris.jpg/1280px-Lutjanus_synagris.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Actinoptrei", "order": "Lutjaniformes", "family": "Lutjanidae"},
+      "id": 0
+    },
+    {
+        "name": "Piping Plover",
+        "desc": "The piping plover is a small shore bird, about 7 1/4 inches long with a 15 inch wingspan. Distinguishing characteristics include sandy-colored feathers with grayish-brown crowns and backs, white foreheads, and dark bands across their crowns. Dark, but incomplete rings encircle their necks. These little birds have yellow-orange legs, black bands across their foreheads from eye to eye, and black rings around the base of their necks. They are small, stocky, sandy-colored birds that resemble sandpipers, with short, stubby bills.",
+        "sciname": "Charadrius melodus",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Charadrius-melodus-004_edit.jpg/1280px-Charadrius-melodus-004_edit.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Aves", "order": "Charadriiformes", "family": "Charadriidae"},
+      "id": 1
+    },
+    {
+        "name": "Common Carp",
+        "desc": "Nongame species, no bag or size limits except on Lady Bird LakeCyprinus is Greek, and carpio is Latin; both words mean \"carp.\" The common carp is a heavy-bodied minnow with barbels on either side of the upper jaw. Typically, color varies from brassy green or yellow, to golden brown, or even silvery. The belly is usually yellowish-white. The dorsal fin with 17-21 rays, and the anal fin both have a heavy toothed spine. Individuals 12-25 inches in length and weighing up to 8-10 pounds are common, although they can grow much larger. Common carp may live in excess of 47 years and weigh over 75 pounds. The all-tackle world record was landed in 1987 from Lac de St. Cassien, France, and weighed in at 75 pounds 11 ounces.",
+        "sciname": "Cyprinus carpio",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a8/Common_carp.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum":"Chordata", "class":"Actinopterygii", "order":"Cypriniformes", "family":"Cyprinidae"},
+      "id": 2
+    },
+    {
+        "name": "Jaguarundi",
+        "desc": "Jaguarundis is slightly larger than a domestic cat, weighing 8 - 16 pounds. Their coat is a solid color; either rusty-brown or charcoal gray. ",
+        "sciname": "Herpailurus yaguarondi",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Puma_yagouaroundi.jpg/1280px-Puma_yagouaroundi.jpg",
+      "taxonomy": {"kingdom":"Metazoa", "phylum":"Chordata", "class":"Mammalia", "order":"Carnivora", "family": "Felidae"},
+      "id": 3
+    },
+    {
+        "name": "Shortnose Gar",
+        "desc": "Lepisosteus is Greek, meaning \"bony scale\", and platostomus is also Greek, meaning \"broad mouth.\" Shortnose gar may be distinguished from other Texas species in that they lack the double row of teeth in the upper jaw of the alligator gar, the long snout of the longnose gar, and the spots of the spotted gar.",
+        "sciname": "Lepisosteus platostomus",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Lepisosteus_platostomus_drawing.jpg",
+      "taxonomy": {"kingdom":"Metazoa", "phylum": "Chordata", "class": "Actinopterygii", "order": "Lepisosteiformes", "family": "Lepisosteidae"},
+      "id": 4
+    },
+    {
+        "name": "Spotted Bass",
+        "desc": "Game fish - see statewide bag & size limits and lake-specific exceptionsMicropterus is Greek meaning \"small fin\" {see Guadalupe bass for further explanation}. The species epithet punctulatus, Latin for \"dotted\", refers to rows of dark spots on the lower sides. Coloration is similar to that of Guadalupe bass, but does not extend as low on the body.",
+        "sciname": "Micropterus punctulatus",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Micropterus_punctulatus.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum":"Chordata", "class": "Actinopterygii", "order": "Perciformes", "family": "Centrarchidae"},
+      "id": 5
+    },
+    {
+        "name": "Ornate Box Turtle",
+        "desc": "The carapace of the Ornate Box Turtle is relatively broad and oval, usually slightly flattened at the top, and lacks both a narrow keel lengthwise down the center and any flaring at the rear edge. The tallest point of the shell is just in front of the hinge on the plastron, so viewed sideways it'll be tallest at the front of the turtle. The carapace is dark with many yellow lines, sometimes grouped into \"starbursts\" radiating downward, and the plastron is dark brown or black with a pattern similar to the carapace. There are almost always four toes on each hind foot.  In older specimens of the ornate box turtle, the coloration may be more of a plain brown color.",
+        "sciname": "Terrapene ornata",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/22/Ornate_and_desert.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Reptilia", "order": "Testudines", "family": "Emydidae"},
+      "id": 6
+    },
+    {
+        "name": "Eastern Box Turtle",
+        "desc": "The carapace of the Eastern Box Turtle is noticeably longer than wide, domed with a narrow keel lengthwise down the center, and has some flaring at the rear edge. The tallest point of the shell is well back towards the tail, so viewed sideways it'll be tallest at the back of the turtle. The carapace is light brown to tan with a few dark flecks on it. The plastron is normally solid yellow without any markings, although the edges individual plates may be dark. Orange, yellow or red spots sometimes visible on head and forelegs. The subspecies in Texas (triunguis) almost always has three toes on each hind foot.",
+        "sciname": "Terrapene carolina",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/20/Terrapene_carolina_major.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum":"Chordata", "class": "Reptilia", "order": "Testunines", "family": "Emydidae"},
+      "id": 7
+    },
+    {
+        "name": "Gray Wolf",
+        "desc": "The Gray Wolf is a close relative of domestic dogs. Its thick fur ranges in color from creamy white, reddish-brown, to shades of gray and black. Gray wolves are the largest species of wolf and range between 50 - 90 pounds and 4 - 5 feet long. Adult males are larger than adult females. ",
+        "sciname": "Canis lupus",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Kolm%C3%A5rden_Wolf.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Mammalia", "order": "Carnivora", "family":"Canidae"},
+      "id": 8
+    },
+    {
+        "name": "Interior Least Tern",
+        "desc": "Least Terns are the smallest North American terns. Adults average 8 to 10 inches in length, with a 20 inch wingspan. Their narrow, pointed wings make them streamlined flyers. Males and females are similar in appearance. Breeding adults are gray above and white below, with a black cap, black nape and eye stripe, white forehead, yellow bill with a black or brown tip, and yellow to orange legs. Hatchlings are about the size of pingpong balls and are yellow and buff with brown mottling. Fledglings (young birds that have left the nest) are grayish brown and buff colored, with white heads, dark bills and eye stripes, and stubby tails. Young terns acquire adult plumage after their first molt at about 1 year, but do not breed until they are 2 to 3 years old. The Least Tern's call has been described as a high pitched \"kit,\"\"zeep,\" or \"zreep.\"",
+        "sciname": "Sterna antillarum athalassos",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Least_Tern_%28Sternula_antillarum%29_RWD1.jpg/1280px-Least_Tern_%28Sternula_antillarum%29_RWD1.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Aves", "order": "Charadriiformes", "family": "Laridae"},
+      "id": 9
+    },
+    {
+        "name": "Palo Duro Mouse",
+        "desc": "Length: 8 inches, 4 inches of body; 4 inches of tail.\r\n\n\r\nColor: Adults are cinnamon brown on their upper body with white underparts  and feet. They have a reddish brown lateral line (stripe along their side). Their large ears (about 3/ 4 inch) and a long tail (1/2 of their total length).",
+        "sciname": "Peromyscus truei comanche",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/81/Pinyon_mouse.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Mammalia", "order": "Rodentia", "family": "Cricetidae"},
+      "id": 10
+    },
+    {
+        "name": "Flier",
+        "desc": "Fliers usually grow to a length of 5 inches (12.7 cm), but can grow to 7 inches (17.8 cm). Their weight averages about 3 ounces (85g). Distinguishing characteristics include an olive-green back; greenish-yellow to cream-colored sides with several rows of brown spots; a dark streak below each eye; deep, round body; and wing-like fins, hence the common name \"flier\". The flier's anal fin (underside of fish in front of tail fin) almost equal in size to its dorsal (back) fin. ",
+        "sciname": "Centrarchus macropterus",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/44/Centrarchus_macropterus_%281%29.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Actinopterygii", "order": "Perciformes", "family": "Centrarchidae"},
+      "id": 11
+    },
+    {
+        "name": "American Oystercatcher",
+        "desc": "The American oystercatcher reaches a height of 17 to 21 inches (43 to 53 cm), with a 35-inch (89 cm) wingspan. Other distinguishing characteristics include an orange bill 3 to 4 inches (7.5 to 10 cm) long, thick pink legs, bright yellow eyes with red rings around them, black or dark brown backs with black heads and necks, and white bellies and breasts and white stripes on their wings.",
+        "sciname": "Haematopus palliatus",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/American_oystercatchers_at_Fort_Tilden_%2860747%29.jpg/1280px-American_oystercatchers_at_Fort_Tilden_%2860747%29.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Aves", "order": "Charadriiformes", "family": "Haematopodidae"},
+      "id": 12
+    },
+    {
+        "name": "Big Brown Bat",
+        "desc": "Eptesicus fuscus is a relatively large, robust bat with a broad, sparsely furred nose and keeled calcar. Its fur color varies from light copper to dark chocolate brown. It has a relatively blunt and rounded tragus. Its forearm is 42-52 mm long, and it bat weighs 12-30 g. It most closely resembles the much smaller evening bat, which never has a forearm longer than 39 mm. It differs from all myotis bats in having upper premolars that are at least half as long as the canines. Those of myotis bats are much shorter, often barely visible.",
+        "sciname": "Eptesicus fuscus",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Big_brown_bat_crawl.png/1280px-Big_brown_bat_crawl.png",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Mammalia", "order": "Chiroptera", "family": "Vespertilionidae"},
+      "id": 13
+    },
+    {
+        "name": "Pinon Mouse",
+        "desc": "The Pinon Mouse is a large-eared, white-footed mouse with a tail as long as, or slightly longer than, the total length of its head and body. Its scanty fur is a cinnamon color.",
+        "sciname": "Peromyscus truei",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/81/Pinyon_mouse.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Mammalia", "order": "Rodentia", "family": "Cricetidae"},
+      "id": 14
+    },
+    {
+        "name": "Texas Tortoise",
+        "desc": "The Texas tortoise has yellowish-orange, \"horned\" scutes (plates) on its shell and cylindrical and columnar hind legs, like those of an elephant. About one and 11/2 inches long (and wide) at hatching, this turtle will normally grow to have a shell length of about 81/2 inches.",
+        "sciname": "Gopherus berlandieri",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Texas_Tortoise_%28Gopherus_berlandieri%29_%2857391706%29.jpg/1024px-Texas_Tortoise_%28Gopherus_berlandieri%29_%2857391706%29.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Reptilia", "order": "Testudines", "family": "Testudinidae"},
+      "id": 15
+    },
+    {
+        "name": "Townsend's Big-eared Bat",
+        "desc": "Corynorhinus townsendii can be distinguished from all other vespertilionids by the presence of prominent, bilateral nose lumps, and large ears.",
+        "sciname": "Corynorhinus townsendii",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/77/Big-eared-townsend-fledermaus.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Mammalia", "order": "Chiropetra", "family": "Vespertilionidae"},
+      "id": 16
+    },
+    {
+        "name": "Pocketed Free-tailed Bat",
+        "desc": "Like all molossids ( free-tailed bats), Nyctinomops femorosacca has a free\u2011tail which extends beyond the edge of the interfemoral membrane. With a forearm of 45\u201149 mm, it is smaller than all other North American molossid species except Tadarida brasiliensis. It is slightly larger than T. brasiliensis and, unlike T. brasiliensis, has its ears joined at the midline.\r\n",
+        "sciname": "Nyctinomops femorosaccus",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Pocketed_free-tailed_bat_%28Nyctinomops_femorosaccus%29.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Mammalia", "order": "Chiroptera", "family": "Molossidae"},
+      "id": 17
+    },
+    {
+        "name": "Grass Carp",
+        "desc": "Ctenopharyngodon and idella are both Greek words, meaning \"comb-like throat-teeth\" and \"distinct\" respectively. The grass carp is one of the largest members of the minnow family. The body is oblong with moderately large scales, while the head has no scales. There are three simple and seven branched rays on the dorsal fin. Grass carp are silvery to olive in color, lacking the golden hue of common carp, and they have no barbels. This species typically reaches sizes of 65 to 80 pounds in its native habitat, but individuals approaching 400 pounds have been reported.",
+        "sciname": "Ctenopharyngodon idella",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Ctenopharyngodon_idella_01_Pengo.jpg/1280px-Ctenopharyngodon_idella_01_Pengo.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Actinopterygii", "order": "Cypriniformes", "family": "Cyprinidae"},
+      "id": 18
+    },
+    {
+        "name": "Ruby-throated Hummingbird",
+        "desc": "Ruby-throated males have metallic green backs, black chins, metallic red throats and white underparts. Females lack the black chins and red throats.",
+        "sciname": "Archilochus colubris",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Male_Ruby-Throated_Hummingbird_Hovering.jpg/1024px-Male_Ruby-Throated_Hummingbird_Hovering.jpg",
+      "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Aves", "order": "Apodiformes", "family": "Trochilidae"},
+      "id": 19
+    }
+]

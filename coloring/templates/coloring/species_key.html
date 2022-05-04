@@ -87,7 +87,11 @@
       padding: 1%;
       height: 80px;
       border-radius: 15px;
-      width: 5%;
+      width: 0%;
+    }
+
+    #back-btn {
+      background-color: #E9EFC0;
     }
     
   </style>
@@ -99,13 +103,13 @@
           <div class="container-fluid">
             
             <div class="col-md">
-             <button type="button" class="btn btn-outline-light btn-lg">
+             <button type="button" id="back" class="btn btn-outline-light btn-lg">
                <h3 class="display-6"> < </h3>
              </button>
             </div>
 
             <div class="col-md" align="center">
-              <h2 class="display-5 text-white">Species Name</h2>
+              <h2 class="display-5 text-white">Species Key</h2>
             </div>
             <div class="col-md" align="right">
             </div>
@@ -118,11 +122,10 @@
   </div>
   <div class="row">
     <div class="col" id="button-container">
-      <ul>
-        <li><div class="choice-button">Bird</div></li>
-        <li><div class="choice-button">Fish</div></li>
-        <li><div class="choice-button">Mammal</div></li>
-        <li><div class="choice-button">Reptile</div></li>
+      <ul id="choice-list">
+        <li><div class="choice-button" id='back-btn'><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+</svg> Back</div></li>
       </ul>
     </div>
   </div>
@@ -133,8 +136,125 @@
   <div id="progress">
   </div>
 </div>
-<div id='percentage'>5%</div>
+<div id='percentage'>0%</div>
 </div>
+
+<script>
+
+  window.onload = function() {
+
+    var tree = {{ tree|safe }};
+
+    var id_stack = [];
+
+    var back_element = $("#back-btn");
+
+    var max_height = tree[0].h;
+  
+    function init() {
+      var first_q_id = 0;
+      $("#back-btn").remove();
+      var question = tree[first_q_id].question;
+      $("#question").text(question);
+      var choices = tree[first_q_id].choices;
+      for (var i = 0; i < choices.length; i++) {
+        $("#choice-list").append($("<div>" + choices[i] + "</div>").addClass("choice-button"));
+      }
+      id_stack.push(first_q_id);
+    }
+
+
+    $("#choice-list").on("click", "div", function() {
+      var current_q_id = id_stack[id_stack.length - 1];
+      console.log("button clicked");
+      var q = tree[current_q_id];
+      console.log(q.question);
+      console.log(q.Path);
+      var choice = $(this).text();
+
+      if (choice.replace(/\s+/g, '') === "Back") {
+        console.log("WE'RE CRACKED BOYSSSS");
+        id_stack.pop();
+        load_q();
+        return;
+      }
+
+      function get_hostname(url) {
+        var m = url.match(/^https:\/\/[^/]+/);
+        return m ? m[0] : null;
+      }
+      
+      var choice_id = q.choices.indexOf(choice);
+      console.log(q.choices);
+      console.log(choice);
+      var path = q.Path[choice_id];
+      if (typeof(path) === 'string') {
+        var hostname = get_hostname(window.location.href);
+        window.location.href = hostname + "/species_info/{{ author.name }}/" + path + "/{{ sid }}/";
+      } else {
+        id_stack.push(path);
+        load_q();
+      }
+    });
+
+    function load_q() {
+      $("#choice-list").empty();
+      var current_q_id = id_stack[id_stack.length - 1];
+      var q = tree[current_q_id];
+      console.log(current_q_id);
+      var load_question = q.question;
+      $("#question").text(load_question);
+      var load_choices = q.choices;
+      for (var i = 0; i < load_choices.length; i++) {
+        $("#choice-list").append("<li></li>").append($("<div>" + load_choices[i] + "</div>").addClass("choice-button"));
+      }
+      if(current_q_id !== 0) {
+        $("#choice-list").append(back_element);
+      }
+
+      var new_percent = Math.round(((max_height - q.h)/max_height) * 100);
+      $("#progress").css("width", new_percent+ "%");
+      var cur_per = parseInt($("#percentage").text());
+      if (new_percent >= cur_per) {
+        incr_percent(cur_per, new_percent, $("#percentage"));
+      } else {
+        dec_percent(cur_per, new_percent, $("#percentage"));
+      }
+    }
+
+    var speed = 10;
+  
+    function incr_percent(i, n, elt) {
+
+      if (i <= n) {
+        elt.text(i + "%");
+        setTimeout(function(){
+          incr_percent(i + 1, n, elt);
+        }, speed);
+      }
+      
+    }
+
+    function dec_percent(i, n, elt) {
+
+      if (i >= n) {
+        elt.text(i + "%");
+        setTimeout(function(){
+          dec_percent(i - 1, n, elt);
+        }, speed);
+      }
+      
+    }
+
+    $("#back").click(function() {
+      window.history.back();
+    });
+
+    init();
+  
+  }
+  
+</script>
   
 </body>
 </html>

@@ -60,6 +60,11 @@
     .ru-csub {
       font-size: 30px;
     }
+
+    #search-overlay {
+      position: absolute;
+      z-index: 10;
+    }
     
   </style>
   
@@ -70,13 +75,13 @@
           <div class="container-fluid">
             
             <div class="col-md">
-             <button type="button" class="btn btn-outline-light btn-lg">
+             <button type="button" id="back" class="btn btn-outline-light btn-lg">
                <h3 class="display-6"> < </h3>
              </button>
             </div>
 
             <div class="col-md" align="center">
-              <h2 class="display-5 text-white">Species Name</h2>
+              <h2 class="display-5 text-white">Species Indentification</h2>
             </div>
 
             <div class="col-md" align="right">
@@ -88,6 +93,9 @@
   <div class="row">
     <div class="col" id="search">
        <input class='form-control' type="text" id='searchbar' placeholder="Search Species">
+        <div class='container' id='search-overlay'>
+          
+        </div>
     </div> 
   </div>
   <hr/>
@@ -97,22 +105,94 @@
   <div class="row">
     <div class="col" id="ru_title">Recently Used</div>
   </div>
-  <div class="row">
+  {% for species in ru_species %}
+  <div class="row jscard" species_id="{{ species.id }}">
     <div class="card ru-card">
       <div class='row no-gutter' style="padding: 0px;">
         <div class="col-3">
-          <img class="card-img" src="https://tinyurl.com/colorful-bird" alt="Suresh Dasari Card">
+          <img class="card-img" src="{{ species.image_url }}" alt="Species Card">
         </div>
         <div class="col">
         <div class="card-body">
-          <h5 class="card-title ru-ctitle">Northern Cardinal</h5>
-          <p class="card-text ru-csub"><i>Cardinalis cardinalis</i></p>
+          <h5 class="card-title ru-ctitle">{{ species.name }}</h5>
+          <p class="card-text ru-csub"><i>{{ species.sciname }}</i></p>
         </div>
         </div>
       </div>
     </div>
   </div>
+  {% endfor %}
 </div>  
- 
+
+<script>
+  
+  window.onload = function() {
+
+    function get_hostname(url) {
+        var m = url.match(/^https:\/\/[^/]+/);
+        return m ? m[0] : null;
+    }
+
+    var card = $('<div class="row jscard" species_id=""> <div class="card ru-card"><div class="row no-gutter" style="padding: 0px;"><div class="col-3"><img class="card-img" src="url" alt="Species Card"></div><div class="col"><div class="card-body"><h5 class="card-title ru-ctitle">name</h5><p class="card-text ru-csub"><i>sciname</i></p></div></div></div></div></div>');
+    
+    $("#key-button").click(function(){
+
+      var hostname = get_hostname(window.location.href);
+      window.location.href = hostname + "/species_key/{{ author.name }}/{{ sid }}/"; 
+      
+    });
+
+    var all_species = {{ all_species|safe }};
+  
+    $("#searchbar").keyup(function(){
+      console.log("KILL ME NOW");
+      $("#search-overlay").empty();
+      var current_text = $(this).val().toLowerCase();
+      console.log(current_text);
+      var filtered = all_species.filter(function(sp) {
+        var name = sp.name.toLowerCase();
+        var sciname = sp.name.toLowerCase();
+        return name.indexOf(current_text) !== -1 || sciname.indexOf(current_text) !== -1;
+      });
+      for (var i = 0; i < filtered.length; i++) {
+        create_card(filtered[i]);
+      }
+    });
+
+
+  
+    function create_card(species) {
+      var new_card = card.clone(true);
+      $(new_card.find("img")[0]).attr("src", species.image_url);
+      $(new_card).attr("species_id", species.id + "");
+      $(new_card.find("h5")[0]).text(species.name);
+      $(new_card.find("i")[0]).text(species.sciname);
+      $("#search-overlay").append(new_card);
+    }
+
+    $("#search-overlay").on("mousedown", "div", function () {
+      var spid = parseInt($(this).attr("species_id"));
+      var hostname = get_hostname(window.location.href);
+      window.location.href = hostname + "/species_info/{{ author.name }}/" + spid + "/{{ sid }}/";
+    });
+
+    $(".jscard").click(function(){
+      var spid = parseInt($(this).attr("species_id"));
+      var hostname = get_hostname(window.location.href);
+      window.location.href = hostname + "/species_info/{{ author.name }}/" + spid + "/{{ sid }}/";
+    });
+    
+    $("#searchbar").focusout(function(e) {
+      $("#search-overlay").empty();
+    });
+  
+    $("#back").click(function() {
+      window.history.back();
+    });
+    
+  }
+  
+</script>
+  
 </body>
 </html>

@@ -128,7 +128,7 @@
           <div class="container-fluid">
             
             <div class="col-md">
-             <button type="button" class="btn btn-outline-light btn-lg">
+             <button id="btnBack" type="button" class="btn btn-outline-light btn-lg">
                <h3 class="display-6"> < </h3>
              </button>
             </div>
@@ -148,17 +148,31 @@
    <div class="main">
         <div class="container-padding" >
           <div class="col-md" align="center"  style="vertical-align: middle;">
-
-            <div id="display-image" style="vertical-align: middle;">
-      
+                
+            <div id="display-image" style="vertical-align: middle; background-image: url('{{image}}'); background-size: contain; background-repeat: no-repeat; background-position: center; ">
+              
+<!--               <img src="{{image.image.url}}"  style="height: 100%"> -->
+             
+              
               <label class="btn btn-white" id="prompt">
-                <input type="file" style="display: none;" id="image-input">
+               
+                
+                 <form id="uploaded-image" enctype="multipart/form-data" method= "post" action="#" style="display: none"> 
+                  {% csrf_token %}
+                  {{form.as_p}}
+                  <input class="btn btn-primary" type="submit" id='upload' onsubmit="return false;"></input>
+                 
+                </form>
+                
                 <h1 class="display-1" >
                   <i class="bi bi-camera"></i>
                   <h1  class="display-6">Add an image</h1> 
                 </h1>
-            </label>
+              </label>
+            
+             
             </div>
+
           </div>
         </div>
   
@@ -263,74 +277,76 @@
   
     function initMap() {
       // Try HTML5 geolocation.
-       
+      
+      if ({{first_edit}}) {
         if (navigator.geolocation) {
-          
-          var isDraggable;
-          if (!{{first_edit}}) { // already edited before, no need to grab user's curr location
-            pos = {
-              lat: +{{latitude}}.toFixed(7), // must truncate
-              lng: +{{longitude}}.toFixed(7),
-            };
-           isDraggable = true;
-          }
-          else {
-            navigator.geolocation.getCurrentPosition(
+          navigator.geolocation.getCurrentPosition(
             (position) => {
               pos = {
                 lat: +position.coords.latitude.toFixed(7), // must truncate
                 lng: +position.coords.longitude.toFixed(7),
               };
-            }, () => {
-                handleLocationError(true, infoWindow, map.getCenter());
-              }
-            );
-            isDraggable = false;
-          }
-
-          marker = new google.maps.Marker({
-            position: pos,
-            map: map,
-            draggable: isDraggable,
-          });
-      
-          console.log("NEW\n" + pos.lat + ", " + pos.lng)
-          map.setCenter(pos);
-          
-          var customPos = pos;
-          google.maps.event.addListener(marker, 'dragend', function (e) {
-            customPos = { lat: +e.latLng.lat().toFixed(3), lng: +e.latLng.lng().toFixed(3) };
-            console.log( "Lat: " + customPos.lat + " Lng: " + customPos.lng);
-          });
-  
-       
-          map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
-          map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(locateControlDiv);
-          
-          centerControlDiv.addEventListener("click", () => {
-              console.log(customPos.lat + " " + customPos.lng)
-              map.setCenter(customPos);
-              map.setZoom(16);
-          });
-  
-          locateControlDiv.addEventListener("click", () => {
-              console.log(pos.lat + " " + pos.lng)
-              marker.setPosition(pos);
+              console.log(typeof +{{latitude}}.toFixed(7))
+              marker = new google.maps.Marker({
+                position: pos,
+                map: map,
+                draggable:true,
+              });
+            
               map.setCenter(pos);
-              pos = customPos;
-              map.setZoom(16);
-          });
-      
-      } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
+              
+              var customPos = pos;
+              google.maps.event.addListener(marker, 'dragend', function (e) {
+                customPos = { lat: +e.latLng.lat().toFixed(3), lng: +e.latLng.lng().toFixed(3) };
+                console.log( "Lat: " + customPos.lat + " Lng: " + customPos.lng);
+              });
+  
+           
+              map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
+              map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(locateControlDiv);
+              
+              centerControlDiv.addEventListener("click", () => {
+                  console.log(customPos.lat + " " + customPos.lng)
+                  map.setCenter(customPos);
+                  map.setZoom(16);
+              });
+  
+              locateControlDiv.addEventListener("click", () => {
+                  console.log(pos.lat + " " + pos.lng)
+                  marker.setPosition(pos);
+                  map.setCenter(pos);
+                  pos = customPos;
+                  map.setZoom(16);
+              });
+            },
+            () => {
+              handleLocationError(true, infoWindow, map.getCenter());
+            }
+          );
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
       }
-
       map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: {{latitude}}, lng: {{longitude}} },
         zoom: 16,
         mapTypeId: 'satellite',
       });
+
+      if (!{{first_edit}}) { // already edited before, no need to grab user's curr location
+
+        pos = {
+          lat: +{{latitude}}.toFixed(7), // must truncate
+          lng: +{{longitude}}.toFixed(7) 
+        }
+        marker = new google.maps.Marker({
+          position: pos,
+          map: map,
+          draggable:false,
+        });
+      
+      }
     }
 
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -360,6 +376,7 @@
         document.querySelector("#display-image").style.opacity = "0.7";
       }
       else {
+        save();
         this.setAttribute("state", "lock")
         this.innerHTML = '<i class="bi bi-pencil-fill"></i>';
         bDisabled = true;
@@ -384,15 +401,26 @@
       document.getElementsByTagName("textarea")
     });
 
-    const image_input = document.querySelector("#image-input");
+     $('#btnBack').click(function() {
+        var authorname = "{{author.name|safe}}";
+        history.back();
+     });
+
+    $('#btnDelete').click(function() {
+      delete_sighting();
+    });
+
+    const image_input = document.querySelector("#uploaded-image");
     image_input.addEventListener("change", function() {
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        const uploaded_image = reader.result;
-        document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
-        document.querySelector("#display-image").style.opacity = ".4";
-      });
-      reader.readAsDataURL(this.files[0]);
+      console.log("submitting")
+      $('#upload').click();
+      // const reader = new FileReader();
+      // reader.addEventListener("load", () => {
+      //   const uploaded_image = reader.result;
+      //   document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
+      //   document.querySelector("#display-image").style.opacity = ".4";
+      // });
+      // reader.readAsDataURL(this.files[0]);
     });
   
     d = "{{date|safe}}".split("-");
@@ -409,7 +437,7 @@
     $('#input-time').timepicker("setTime", new Date(date.getTime()));
    
     function save() {
-
+      console.log("SAVING")
       //Must change format of date and time before pushing to db
       d = $("#input-date").val().split("/")
       date = `${d[2]}-${d[0]}-${d[1]}`
@@ -418,8 +446,10 @@
       t[0] = (t[2] == "PM") ? `${parseInt(t[0], 10) + 12}` : t[0]
       time = `${t[0]}:${t[1]}:00.000000`
 
-  
+      var image_url = document.querySelector("#display-image").style.backgroundImage.slice(4, -1).replace(/"/g, "");
+
       var data_to_send = {
+        "image" : image_url,
         "name": $("#input-sighting").val(),
         "species": $("#input-taxonomy").val(),
         "date": date,
@@ -427,7 +457,7 @@
         "latitude": marker.getPosition().lat(),
         "longitude": marker.getPosition().lng(),
         "notes": $("#input-notes").val(),
-        "first_edit": 0.
+        "first_edit": 0
       };
 
       // This ajax request sends a POST request to the server
@@ -435,7 +465,7 @@
 
       var authorname = "{{author.name|safe}}"
       var id = "{{id|safe}}"
-      console.log(id)
+
       $.ajax({
         type: "POST",
         url: "/sighting/" + authorname + "/" + id + "/",
@@ -445,12 +475,31 @@
         }
       });
     }
-    
-     $('#btnEdit').on("click", function(){
-        save()
+
+    function delete_sighting() {
+
+      if(!confirm("Are you sure you want to delete this sighting?"))
+        return;
+      
+      var authorname = "{{author.name|safe}}"
+      var id = "{{id|safe}}"
+      $.ajax({
+        type: "POST",
+        url: "/sighting/" + authorname + "/" + id + "/",
+        data:  JSON.stringify({"delete": null}),
+        success: function (response) {
+            history.back();
+          }
       });
+    }
 
+    window.onload = function() {
+       if (!{{first_edit}}) {
+         $("#btnEdit").click();
+       }
+    };
 
+    
   </script>
 
 </body>

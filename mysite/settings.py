@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'coloring'
+    'coloring',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -121,5 +123,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 ALLOWED_HOSTS = ['*']
 X_FRAME_OPTIONS = '*'
+
+# Added for the image upload functionality -Peter
+MEDIA_URL = '/images/'
+
+STATICFILES_DIRS = [
+  os.path.join(BASE_DIR, 'static')
+]
+
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'static/images')
 
 

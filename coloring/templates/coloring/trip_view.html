@@ -113,6 +113,27 @@
       width: 100%;
     }
 
+    div.gallery {
+  	  margin: 5px;
+  	  border: 1px solid #ccc;
+  	  float: left;
+  	  width: 95%;
+        height: 600px;
+  	  position: relative
+  	  overflow:hidden;
+  	  overflow-y:scroll;
+  	}
+  
+  	div.gallery img {
+  	  width: 100%;
+  	  height: auto;
+  	}
+  
+  	div.desc {
+  	  padding: 15px;
+  	  text-align: center;
+  	}
+
   </style>
   
 </head>
@@ -122,7 +143,7 @@
      
         <nav class="navbar navbar-expand-md py-3 navbar-light navbar-custom nav-fill">
           <div class="container-fluid">
-            
+  
             <div class="col-md">
              <button type="button" class="btn btn-outline-light btn-lg">
                <h3 class="display-6"> < </h3>
@@ -141,6 +162,43 @@
           </div>
         </nav>
 
+        <div class="input-group mb-3" style="padding-top: 20px;">
+
+      <div class="container-padding" >
+          <div class="col-md" align="center"  style="vertical-align: middle;">
+			  <div class="input-group mb-3" style="padding-top: 20px;">
+		        <div class="input-group-prepend">
+		          <span class="input-group-text" id="field-name">Route &ensp;</span>
+		        </div>
+<!-- ADD MAP FEATURE HERE -->
+<!-- 		        <div id="map" aria-label="Location" id = "input-location" aria-describedby="field-name"></div> -->
+
+		      </div>
+            </div>
+          </div>
+
+      <div class="input-group mb-3" style="padding-top: 40px;">
+        <div class="input-group-prepend" >
+          <span class="input-group-text" id="field-name" >Notes &ensp;</span>
+        </div>
+        <textarea class="form-control" style= "font-size: 1.5rem;" id = "input-notes"  placeholder="add notes..." aria-label="Notes" aria-describedby="field-name">{{notes}}</textarea>
+      </div>
+
+  <div class="input-group mb-3" style="padding-top: 20px;">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="field-name">Sightings &ensp;</span>
+          </div>
+		  <div class="row">
+			<div class="gallery">
+<!-- 				SIGHTING IMAGE AND NAME SETUP -->
+			  <a target="_blank" href="">
+			    <!-- <img src="" alt="Cinque Terre" width="600" height="400"> -->
+			  </a>
+			  <div class="desc">SIGHTING NAME</div>
+			</div>
+		</div>
+      </div>
+
         <div class="row fixed-row-bottom" style="padding-top: 50px;">
           <div class="col-md" align="right">
            <button id = "btnAddSighting" type="button" class="btn btn-circle btn-xl">
@@ -149,7 +207,16 @@
           </div>
         </div>
 
+  <div class="row" style="padding-top: 50px;">
+        <div class="col-12" align="center">
+          <div id="btnDelete" class="btn btn-light" style="display: block; font-size: 1.5rem"> <i class="bi bi-trash3-fill"></i> Delete Trip</div>
+        </div>
+      </div>
+
   <script>
+    
+    const trip = {{ trip|safe }};
+    
     var authorname = "{{author.name|safe}}";
   
     
@@ -166,9 +233,53 @@
         }
     });
   });
+
+    function create_card(species) {
+      var new_card = card.clone(true);
+      $(new_card.find("img")[0]).attr("src", species.image_url);
+      $(new_card).attr("species_id", species.id + "");
+      $(new_card.find("h5")[0]).text(species.name);
+      $(new_card.find("i")[0]).text(species.sciname);
+      $("#search-overlay").append(new_card);
+    }
+
+  // d = "{{date|safe}}".split("-");
+  // t = "{{time|safe}}".split(":");
+  
+  // date = new Date(d[0], d[1] - 1 , d[2], t[0], t[1], t[2]);
+  
+  
+  // $('#input-date').datepicker({
+  //     format: "mm/dd/yyyy",
+  // }).datepicker("setValue", date);
+  
+  // $('#input-time').timepicker("setTime", new Date(date.getTime()));
+
+    $('#btnDelete').click(function() {
+      delete_trip();
+    });
+
+    function delete_trip() {
+      if(!confirm("Are you sure you want to delete this trip?"))
+        return;
+
+      var authorname = "{{author.name|safe}}"
+      var id = "{{id|safe}}"
+      // INCOMPLETE: also need to go through and delete sightings associated with trip
+      $.ajax({
+        type: "POST",
+        url: "/trip/" + authorname + "/" + id + "/",
+        data:  JSON.stringify({"delete": null}),
+        success: function (response) {
+            history.back();
+          }
+      });
+      
+    }
    
     
   </script>
 
   </body>
 </html>
+

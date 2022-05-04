@@ -1,0 +1,80 @@
+[
+  {
+    "question": "Is it a...",
+    "choices": ["Bird", "Mammal", "Fish", "Reptile"],
+    "Path": [6,9,3,1],
+    "h": 4
+  },
+  {
+    "question": "Does it have a...",
+    "choices": ["Bumpy shell", "Smooth shell"],
+    "Path": ["15", 2],
+    "h": 2
+  },
+  {
+    "question": "How many toes does it have on its hind feet?",
+    "choices": ["4", "3"],
+    "Path": ["6", "7"],
+    "h": 1
+  },
+  {
+    "question": "Is the caudal (back) fin...",
+    "choices": ["Sideways V shape", "Sideways heart shape", "Rounded", "flat/small curved"],
+    "Path": [4,"5","4","0"],
+    "h": 3
+  },
+  {
+    "question": "Does it have a round and small body?",
+    "choices": ["Yes", "No"],
+    "Path": ["11", 5],
+    "h": 2
+  },
+  {
+    "question": "Does it have whiskers?",
+    "choices": ["Yes", "No"],
+    "Path": ["2", "18"],
+    "h": 1
+  },
+  {
+    "question": "Does it have a red throat?",
+    "choices": ["Yes", "No"],
+    "Path": ["19",7],
+    "h": 3
+  },
+  {
+    "question": "Does it have a short beak?",
+    "choices": ["Yes", "No"],
+    "Path": ["1",8],
+    "h": 2
+  },
+  {
+    "question": "What color is the beak?",
+    "choices": ["Yellow-orange", "Red"],
+    "Path": ["9", "12"],
+    "h": 1
+  },
+  {
+    "question": "Is it a...",
+    "choices": ["Bat", "Rodent", "Canine", "Cat"],
+    "Path": [10,12,"8", "3"],
+    "h": 3
+  },
+  {
+    "question": "Does it have relatively large, long ears?",
+    "choices": ["Yes", "No"],
+    "Path": ["16",11],
+    "h": 2
+  },
+  {
+    "question": "Does it have a visible tail not attached to its wings?",
+    "choices": ["Yes", "No"],
+    "Path": ["17", "13"],
+    "h": 1
+  },
+  {
+    "question": "Is its tail longer than its body?",
+    "choices": ["Yes", "No"],
+    "Path": ["10", "14"],
+    "h": 1
+  }
+]

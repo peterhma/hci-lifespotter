@@ -4,7 +4,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Species Name</title> <!--Placeholder-->
+  <title>{{ info.name }}</title> <!--Placeholder-->
 	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
   <link href="{% static 'coloring/vendors/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
@@ -50,7 +50,7 @@
     }
     
     body {
-      background-image: url("../../static/coloring/images/cardinal.jpg");
+      background-image: url("{{ info.image_url }}");
       background-size: cover;
     }
 
@@ -79,17 +79,17 @@
           <div class="container-fluid">
             
             <div class="col-md">
-             <button type="button" class="btn btn-outline-light btn-lg">
+             <button type="button" id="back" class="btn btn-outline-light btn-lg">
                <h3 class="display-6"> < </h3>
              </button>
             </div>
 
             <div class="col-md" align="center">
-              <h2 class="display-5 text-white">Northern Cardinal</h2>
+              <h2 class="display-5 text-white">{{ info.name }}</h2>
             </div>
 
             <div class="col-md" align="right">
-              <button id="btnEdit" type="button" class="btn btn-outline-light btn-lg" state="unlock">
+              <button id="choose" type="button" class="btn btn-outline-light btn-lg" state="unlock">
                 <i class="bi bi-check-circle-fill"></i>
               </button>
             </div>
@@ -100,28 +100,64 @@
   <div id="card">
     <div class="container">
       <div class="row justify-content-center" id="title">
-        <div class="col text-center">Northern Cardinal</div>
+        <div class="col text-center">{{ info.name }}</div>
       </div>
       <hr/>
       <div class="row justify-content-center contents">
-        <div class="col text-center"><b class="heading">Scientific Name:</b> <br> Cardinalis cardinalis </div>
+        <div class="col text-center"><b class="heading">Scientific Name:</b> <br> {{ info.sciname }} </div>
       </div>
       <div class="row justify-content-center contents">
         <div class="col text-center"><b class="heading">Taxonomy:</b> 
         <ul class="no-bullets">
-          <li>Kingdom: Animalia</li>
-          <li>Phylum: Chordata</li>
-          <li>Class: Aves</li>
-          <li>Order: Passeriformes</li>
-          <li>Family: Cardinalidae</li>
+          <li>Kingdom: {{ info.taxonomy.kingdom }}</li>
+          <li>Phylum: {{ info.taxonomy.phylum }}</li>
+          <li>Class: {{ info.taxonomy.class }}</li>
+          <li>Order: {{ info.taxonomy.order }}</li>
+          <li>Family: {{ info.taxonomy.family }}</li>
         </ul>
         </div>
       </div>
       <div class="row justify-content-center contents">
-        <div class="col text-center"><b class="heading">Description:</b> <br> Red, pointed beak, black covering </div>
+        <div class="col text-center"><b class="heading">Description:</b> <br> {{ info.desc }} </div>
+      </div>
+      <div class="row justify-content-center contents">
+        <div class="col text-center">
+          <br>
+        </div>
       </div>
     </div>
   </div>
 </div>  
+
+<script>
+
+  window.onload = function() {
+
+    $("#choose").click(function() {
+
+      var data_to_send = {"species_id": {{ info.id }}};
+      
+      $.ajax({
+          type: "POST",
+          url: "/species_info/" + "{{ author.name }}" + "/" + "{{ info.id }}" + "/{{ sid }}/",
+          data: JSON.stringify(data_to_send),
+          success: function (response) {
+            // prints the response from the server
+            console.log(response); 
+          }
+      });
+
+      window.location.href = hostname + "/sighting/{{ author.name }}/{{ sid }}/";      
+  
+    });
+
+    $("#back").click(function() {
+      window.history.back();
+    });
+    
+  }
+  
+</script>
+  
 </body>
 </html>
