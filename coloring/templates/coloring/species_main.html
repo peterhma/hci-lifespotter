@@ -138,7 +138,8 @@
     $("#key-button").click(function(){
 
       var hostname = get_hostname(window.location.href);
-      window.location.href = hostname + "/species_key/{{ author.name }}/{{ sid }}/"; 
+      //window.location.href = hostname + "/species_key/{{ author.name }}/{{ sid }}/"; 
+      window.location.replace(hostname + "/species_key/{{ author.name }}/{{ sid }}/");
       
     });
 
@@ -173,13 +174,15 @@
     $("#search-overlay").on("mousedown", "div", function () {
       var spid = parseInt($(this).attr("species_id"));
       var hostname = get_hostname(window.location.href);
-      window.location.href = hostname + "/species_info/{{ author.name }}/" + spid + "/{{ sid }}/";
+      //window.location.href = hostname + "/species_info/{{ author.name }}/" + spid + "/{{ sid }}/";
+      window.location.replace(hostname + "/species_info/{{ author.name }}/" + spid + "/{{ sid }}/");
     });
 
     $(".jscard").click(function(){
       var spid = parseInt($(this).attr("species_id"));
       var hostname = get_hostname(window.location.href);
-      window.location.href = hostname + "/species_info/{{ author.name }}/" + spid + "/{{ sid }}/";
+      //window.location.href = hostname + "/species_info/{{ author.name }}/" + spid + "/{{ sid }}/";
+      window.location.replace(hostname + "/species_info/{{ author.name }}/" + spid + "/{{ sid }}/");
     });
     
     $("#searchbar").focusout(function(e) {

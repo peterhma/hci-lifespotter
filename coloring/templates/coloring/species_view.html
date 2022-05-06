@@ -133,8 +133,15 @@
 
   window.onload = function() {
 
+
+    function get_hostname(url) {
+      var m = url.match(/^https:\/\/[^/]+/);
+      return m ? m[0] : null;
+    }
+    
     $("#choose").click(function() {
 
+      console.log("clicked");
       var data_to_send = {"species_id": {{ info.id }}};
       
       $.ajax({
@@ -147,8 +154,12 @@
           }
       });
 
-      window.location.href = hostname + "/sighting/{{ author.name }}/{{ sid }}/";      
-  
+      var hostname = get_hostname(window.location.href);
+      //window.location.href = hostname + "/sighting/{{ author.name }}/{{ sid }}/";      
+      //window.location.replace(hostname + "/sighting/{{ author.name }}/{{ sid }}/");
+      setTimeout(function(){
+        window.history.back();
+      }, 100);
     });
 
     $("#back").click(function() {

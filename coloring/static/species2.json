@@ -158,5 +158,21 @@
       "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Male_Ruby-Throated_Hummingbird_Hovering.jpg/1024px-Male_Ruby-Throated_Hummingbird_Hovering.jpg",
       "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Aves", "order": "Apodiformes", "family": "Trochilidae"},
       "id": 19
+    },
+    {
+        "name": "Red-eared Slider",
+        "desc": "The red-eared slider is perhaps the best known and most recognizable of turtles. It is a medium sized turtle with a dark green oval shell, marked with yellow in younger turtles, green legs with thin yellow stripes and a green head with a red stripe behind the eye.",
+        "sciname": "Trachemys scripta elegans",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/RedEaredSlider05.jpg/1280px-RedEaredSlider05.jpg",
+        "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Reptilia", "order": "Testudines", "family": "Emydidae"},
+        "id": 20
+    },
+    {
+        "name": "Rock Pigeon",
+        "desc": "The rock dove commonly is referred to as a pigeon. Patterns of blue to gray color vary from bird to bird. The wild rock dove generally has iridescent feathers on its head and neck. They also characteristically have two black bars across each wing, a white rump and a black band at the end of the bill.",
+        "sciname": "Columba livia",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Paloma_brav%C3%ADa_%28Columba_livia%29%2C_Palacio_de_Nymphenburg%2C_M%C3%BAnich%2C_Alemania01.JPG/800px-Paloma_brav%C3%ADa_%28Columba_livia%29%2C_Palacio_de_Nymphenburg%2C_M%C3%BAnich%2C_Alemania01.JPG",
+        "taxonomy": {"kingdom": "Metazoa", "phylum": "Chordata", "class": "Aves", "order": "Columbiformes", "family": "Columbidae"},
+        "id": 21
     }
 ]

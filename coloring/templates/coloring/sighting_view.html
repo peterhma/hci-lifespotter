@@ -189,7 +189,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text" id="field-name">Taxonomy &ensp;</span>
         </div>
-        <input type="text" class="form-control input-sm" id = "input-taxonomy" placeholder="Fill in or search..." aria-label="Taxonomy" aria-describedby="field-name" value="{{species}}">
+        <input type="text" class="form-control input-sm" id = "input-taxonomy" placeholder="Fill in or search..." aria-label="Taxonomy" aria-describedby="field-name" value="{{ species }}">
         
         <div class="input-group-append">
           <button  id="btnSearch" class="btn btn-light" style ="height: 85%; top: 10%" type="button"><i class="bi bi-search"></i></button>
@@ -361,6 +361,17 @@
 
     window.initMap = initMap;
 
+    function get_hostname(url) {
+      var m = url.match(/^https:\/\/[^/]+/);
+      return m ? m[0] : null;
+    }
+
+    $("#btnSearch").click(function() {
+
+      var hostname = get_hostname(window.location.href);
+      window.location.href = hostname + "/species/{{ author.name }}/{{ id }}";
+      
+    });
     
     $('#btnEdit').click(function() {
       var bDisabled;
@@ -498,6 +509,12 @@
          $("#btnEdit").click();
        }
     };
+
+    $(window).bind("pageshow", function(event) {
+        if (event.originalEvent.persisted) {
+            window.location.reload() 
+        }
+    });
 
     
   </script>

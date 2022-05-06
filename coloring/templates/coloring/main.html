@@ -330,14 +330,28 @@
 
   function dotrip(id) {
     console.log("do trip: "+id);
+    window.location.href = "/trip/{{author.name}}/"+id;
   }
 	
 	function edittrip(id) {
 		console.log("edit trip: "+id);
+    dotrip(id);
 	}
 	
 	function deltrip(id) {
-    $("#trip-"+trip.id).remove();
+
+    if(!confirm("Are you sure you want to delete this trip?"))
+      return;
+
+    var authorname = "{{author.name|safe}}"
+    $.ajax({
+      type: "POST",
+      url: "/trip/" + authorname + "/" + id + "/",
+      data:  JSON.stringify({"delete": null}),
+      success: function (response) {
+      }
+    });
+    $("#trip-"+id).remove();
     
 		console.log("del trip: "+id);
 	}
@@ -375,17 +389,26 @@
 	}
 	
 	//TODO: remove fullscreen
-	
+	var pos = { lat: 0, lng: 0 };;
 	// Initialize and add the map
 	function initMap() {
     //$("map").height(100);
     
-		// The location of Uluru
-		const uluru = { lat: 15, lng: -20 };
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          pos = {
+            lat: +position.coords.latitude.toFixed(7), // must truncate
+            lng: +position.coords.longitude.toFixed(7),
+          };
+          map.setCenter(pos);
+        });
+    }
+    
 		// The map, centered at Uluru
 		map = new google.maps.Map(document.getElementById("map"), {
-			zoom: 4,
-			center: uluru,
+			zoom: 12,
+			center: pos,
 		});
 		  
 		google.maps.event.addListener(map, "bounds_changed", (event) => {

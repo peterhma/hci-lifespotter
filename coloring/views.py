@@ -161,7 +161,11 @@ def sighting(request, id, authorname="DefaultAuthor"):
       print("Sighting exists, returning id", id)
     except ValueError:
       print("ERROR: No sighting with that ID exists. Must create the sighting first!")
-        
+
+    #print(sighting.species)
+
+    
+    
     data = {
       "author": author,
       "name": sighting.name,
@@ -175,9 +179,7 @@ def sighting(request, id, authorname="DefaultAuthor"):
       "id": id,
       "first_edit" : sighting.first_edit,
       "image" : sighting.image,
-    }  
-
-    print(sighting.image)
+    }
     return render(request, 'coloring/sighting_view.html', data)
 
 def create_new_trip(author) -> int:
@@ -246,6 +248,7 @@ def trip(request, id, authorname="DefaultAuthor"):
       "trip": {
         "name": trip.name,
         "desc": trip.desc,
+        "id": id,
         "sightings": sightings
       }
     }
@@ -280,8 +283,8 @@ def species_info(request, species_id=0, authorname="DefaultAuthor", sid=0):
 
     author.save()
 
-    if Sighting.objects.filter(pk=id).exists():
-      sighting = Sighting.objects.get(pk=id)
+    if Sighting.objects.filter(pk=sid).exists():
+      sighting = Sighting.objects.get(pk=sid)
       sighting.species = species_dict[to_add]["name"]
       sighting.save()
     
@@ -307,7 +310,7 @@ def species_main(request, authorname="DefaultAuthor", sid=0):
     
   ru_list = json.loads(author.recently_used)
   
-  ru_species = [species_dict[i] for i in ru_list]
+  ru_species = [species_dict[i] for i in ru_list[::-1]]
   
   data = {
     "author": author,

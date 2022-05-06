@@ -1,4 +1,4 @@
-{% load static %}
+x{% load static %}
 
 <!DOCTYPE html>
 <html>
@@ -88,6 +88,7 @@
       height: 80px;
       border-radius: 15px;
       width: 0%;
+      transition: width 1s;
     }
 
     #back-btn {
@@ -190,7 +191,8 @@
       var path = q.Path[choice_id];
       if (typeof(path) === 'string') {
         var hostname = get_hostname(window.location.href);
-        window.location.href = hostname + "/species_info/{{ author.name }}/" + path + "/{{ sid }}/";
+        //window.location.href = hostname + "/species_info/{{ author.name }}/" + path + "/{{ sid }}/";
+        window.location.replace(hostname + "/species_info/{{ author.name }}/" + path + "/{{ sid }}/");
       } else {
         id_stack.push(path);
         load_q();

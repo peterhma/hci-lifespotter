@@ -6,10 +6,10 @@
     "h": 4
   },
   {
-    "question": "Does it have a...",
-    "choices": ["Bumpy shell", "Smooth shell"],
-    "Path": ["15", 2],
-    "h": 2
+    "question": "Does it have prominent bumps on its shell?",
+    "choices": ["Yes", "No"],
+    "Path": ["15", 13],
+    "h": 3
   },
   {
     "question": "How many toes does it have on its hind feet?",
@@ -44,7 +44,7 @@
   {
     "question": "Does it have a short beak?",
     "choices": ["Yes", "No"],
-    "Path": ["1",8],
+    "Path": [14,8],
     "h": 2
   },
   {
@@ -75,6 +75,18 @@
     "question": "Is its tail longer than its body?",
     "choices": ["Yes", "No"],
     "Path": ["10", "14"],
+    "h": 1
+  },
+  {
+    "question": "Does it have red streaks on the sides of its head?",
+    "choices": ["Yes", "No"],
+    "Path": ["20", 2],
+    "h": 2
+  },
+  {
+    "question": "Is its neck iridescent?",
+    "choices": ["Yes", "No"],
+    "Path": ["21", "1"],
     "h": 1
   }
 ]

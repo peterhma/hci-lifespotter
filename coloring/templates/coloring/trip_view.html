@@ -2,284 +2,565 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Trip</title>
-	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
-  <link href="{% static 'coloring/vendors/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Trip</title>
+    <script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
+    <link href="{% static 'coloring/vendors/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-  
-  <link href="{% static 'coloring/vendors/datepicker/css/datepicker.css' %}" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="{% static 'coloring/vendors/datepicker/js/bootstrap-datepicker.js' %}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
-  <link href="{% static 'coloring/vendors/timepicker/css/bootstrap-timepicker.css' %}" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="{% static 'coloring/vendors/timepicker/js/bootstrap-timepicker.js' %}"></script>
-  
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link href="{% static 'coloring/vendors/datepicker/css/datepicker.css' %}" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{% static 'coloring/vendors/datepicker/js/bootstrap-datepicker.js' %}"></script>
 
-<!--   <script 
+    <link href="{% static 'coloring/vendors/timepicker/css/bootstrap-timepicker.css' %}" rel="stylesheet"
+        type="text/css" />
+    <script type="text/javascript" src="{% static 'coloring/vendors/timepicker/js/bootstrap-timepicker.js' %}"></script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <!--   <script 
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBT0L8QkxrYT1W4mKtP_jAMZZeFTj0UH6M&callback=initMap"
     defer
   ></script> -->
 
 
-  
-  
-  <style type="text/css">
-    #myCanvas {
-      border: 1px solid black;
-    }
 
-    .navbar {
-      min-height: 85px;
-      width:100%;
 
-    }
+    <style type="text/css">
+        #myCanvas {
+            border: 1px solid black;
+        }
 
-    *{
-      border: 0;
-      padding: 0;
-      margin: 0;
-    }
+        .navbar {
+            min-height: 85px;
+            width: 100%;
 
-    .navbar-custom {
-      background-color: #719F1E;
-    }
+        }
 
-    .fixed-row-bottom { 
-      position: fixed;
-      bottom: 70px;
-      right: 30px;
-    }
+        * {
+            border: 0;
+            padding: 0;
+            margin: 0;
+        }
 
-    .container-padding {
-      padding-top: 20px;
-    }
+        .navbar-custom {
+            background-color: #719F1E;
+        }
 
-    .input-lg {
-      min-height: 100px;
-      font-size: 4rem;
-      font-weight: bold;
-      text-align: center;
-      border: 0;
-    }
+        .fixed-row-bottom {
+            position: fixed;
+            bottom: 70px;
+            right: 30px;
+        }
 
-    .form-control-lg {
-      width: 80%;
-      min-height: 600px;
-      text-align: center;
-      align-items: center;
-      }
+        .container-padding {
+            padding-top: 20px;
+        }
 
-    .input-group-text {
-      background-color: white;
-      font-weight: bold;
-      font-size: 2rem;
-      border: 0;
-    }
+        .input-lg {
+            min-height: 100px;
+            font-size: 4rem;
+            font-weight: bold;
+            text-align: center;
+            border: 0;
+        }
 
-    .input-sm {
-      border: 0;
-      min-height: 40px;
-      font-size: 2rem; 
-    }
+        .form-control-lg {
+            width: 80%;
+            min-height: 600px;
+            text-align: center;
+            align-items: center;
+        }
 
-    input[type="text"][disabled], input[type="datetime-local"][disabled] {
-       background-color: #FFFFFF; 
-    }
+        .input-group-text {
+            background-color: white;
+            font-weight: bold;
+            font-size: 2rem;
+            border: 0;
+        }
 
-    .btn-white {
-      width: 100%;
-      height: 45%;
-      top: 35%;
-      position: relative;
-      opacity: .7;
-    }
+        .input-sm {
+            border: 0;
+            min-height: 40px;
+            font-size: 2rem;
+        }
 
-    .btn-circle.btn-xl {
-			width: 100px;
-			height: 100px;
-			padding: 13px 18px;
-			border-radius: 60px;
-			font-size: 70px;
-      background-color: #719F1E;
-      color: white;
-		}
-    
-    #map {
-      height: 400px;
-      width: 100%;
-    }
+        input[type="text"][disabled],
+        input[type="datetime-local"][disabled] {
+            background-color: #FFFFFF;
+        }
 
-    div.gallery {
-  	  margin: 5px;
-  	  border: 1px solid #ccc;
-  	  float: left;
-  	  width: 95%;
-        height: 600px;
-  	  position: relative
-  	  overflow:hidden;
-  	  overflow-y:scroll;
-  	}
-  
-  	div.gallery img {
-  	  width: 100%;
-  	  height: auto;
-  	}
-  
-  	div.desc {
-  	  padding: 15px;
-  	  text-align: center;
-  	}
+        .btn-white {
+            width: 100%;
+            height: 45%;
+            top: 35%;
+            position: relative;
+            opacity: .7;
+        }
 
-  </style>
-  
+        .btn-circle.btn-xl {
+            width: 100px;
+            height: 100px;
+            padding: 13px 18px;
+            border-radius: 60px;
+            font-size: 70px;
+            background-color: #719F1E;
+            color: white;
+        }
+
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+
+        .ru-card {
+          width: 100%;
+        }
+
+        .ru-card {
+          width: 100%;
+        }
+
+        div.gallery {
+            margin: 5px;
+            border: 1px solid #ccc;
+            float: center;
+            width: 95%;
+            height: 100px;
+            position: relative overflow:hidden;
+            overflow-y: scroll;
+        }
+
+        div.gallery img {
+            width: 100%;
+            height: auto;
+        }
+
+        div.desc {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .subrow {
+      		background-color: white;
+      	
+      		position: relative;
+      		width: calc(100% - 100px);
+      		height: 50px;
+      		
+      		border-style: solid;
+      		border-color: gray;
+      		display: inline-block;
+      	}
+      	
+      	.subrowtxt {
+      		text-align: center;
+      		line-height: 44px;
+      		font-size: 170%;
+      	}
+      	
+      	.subrowbutt {
+      		position: absolute;
+      		right: -1px;
+      		top: -1px;
+      		
+      		width: 50px;
+      		height: 50px;
+      		
+      		border-width: 0 0 0 3px;
+      		border-style: solid;
+      		border-color: gray;
+      		
+      		-webkit-touch-callout: none;
+      		-webkit-user-select: none;
+      		-khtml-user-select: none;
+      		-moz-user-select: none;
+      		-ms-user-select: none;
+      		user-select: none;
+      	}
+      	
+      	.rowimg {
+      		float: left;
+      		height: 100px;
+      		width: 100px;
+          border-width: 2px 0px 2px 2px;
+      		border-style: solid;
+      		border-color: gray;      	}
+
+        #sightlist {
+          
+          overflow-y: scroll;
+        }
+      
+    </style>
+
 </head>
-  
+
 <body>
 
-     
-        <nav class="navbar navbar-expand-md py-3 navbar-light navbar-custom nav-fill">
-          <div class="container-fluid">
-  
+
+    <nav class="navbar navbar-expand-md py-3 navbar-light navbar-custom nav-fill">
+        <div class="container-fluid">
+
             <div class="col-md">
-             <button type="button" class="btn btn-outline-light btn-lg">
-               <h3 class="display-6"> < </h3>
-             </button>
+                <button id="btnBack" type="button" class="btn btn-outline-light btn-lg">
+                    <h3 class="display-6">
+                        < </h3>
+                </button>
             </div>
 
             <div class="col-md" align="center">
-              <h2 class="display-5 text-white"> Trip </h2>
+                <h2 class="display-5 text-white"> Trip </h2>
             </div>
 
             <div class="col-md" align="right">
-              <button id="btnEdit" type="button" class="btn btn-outline-light btn-lg" state="unlock">
-                <i class="bi bi-check-circle-fill"></i>
-              </button>
+                <button id="btnEdit" type="button" class="btn btn-outline-light btn-lg" state="unlock">
+                    <i class="bi bi-check-circle-fill"></i>
+                </button>
             </div>
-          </div>
-        </nav>
+        </div>
+    </nav>
 
+    <!-- TRIP NAME -->
+    <div class="container container-padding col-md">
+        <div class="input-group mb-3" style="padding-top: 20px;" >
+            <div class="input-group input-group-lg" >
+                <h1>
+                    <input type="text" class="form-control input-lg" id="input-sighting" placeholder="Unamed">
+                </h1>
+            </div>
+        </div>
+
+        <!-- MAP/ROUTE -->
+
+       <div class="input-group mb-3" style="padding-top: 20px;">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="field-name">Sightings &ensp;</span>
+            </div>
+        </div>
+                        
+        <div class="container-padding">
+            <div class="col-md" align="center" style="vertical-align: middle;">
+                	<div id="map"></div>
+  
+              <script
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBT0L8QkxrYT1W4mKtP_jAMZZeFTj0UH6M&callback=initMap&v=weekly"
+                defer
+              ></script>
+            </div>   
+        </div>
+
+        <!-- SIGHTING LIST -->
         <div class="input-group mb-3" style="padding-top: 20px;">
-
-      <div class="container-padding" >
-          <div class="col-md" align="center"  style="vertical-align: middle;">
-			  <div class="input-group mb-3" style="padding-top: 20px;">
-		        <div class="input-group-prepend">
-		          <span class="input-group-text" id="field-name">Route &ensp;</span>
-		        </div>
-<!-- ADD MAP FEATURE HERE -->
-<!-- 		        <div id="map" aria-label="Location" id = "input-location" aria-describedby="field-name"></div> -->
-
-		      </div>
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="field-name">Sighting List &ensp;</span>
+                
             </div>
-          </div>
-
-      <div class="input-group mb-3" style="padding-top: 40px;">
-        <div class="input-group-prepend" >
-          <span class="input-group-text" id="field-name" >Notes &ensp;</span>
-        </div>
-        <textarea class="form-control" style= "font-size: 1.5rem;" id = "input-notes"  placeholder="add notes..." aria-label="Notes" aria-describedby="field-name">{{notes}}</textarea>
-      </div>
-
-  <div class="input-group mb-3" style="padding-top: 20px;">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="field-name">Sightings &ensp;</span>
-          </div>
-		  <div class="row">
-			<div class="gallery">
-<!-- 				SIGHTING IMAGE AND NAME SETUP -->
-			  <a target="_blank" href="">
-			    <!-- <img src="" alt="Cinque Terre" width="600" height="400"> -->
-			  </a>
-			  <div class="desc">SIGHTING NAME</div>
-			</div>
-		</div>
-      </div>
-
-        <div class="row fixed-row-bottom" style="padding-top: 50px;">
-          <div class="col-md" align="right">
-           <button id = "btnAddSighting" type="button" class="btn btn-circle btn-xl">
-             <h1 style=" font-weight: bold;"> + </h1>
-           </button>
-          </div>
         </div>
 
-  <div class="row" style="padding-top: 50px;">
-        <div class="col-12" align="center">
-          <div id="btnDelete" class="btn btn-light" style="display: block; font-size: 1.5rem"> <i class="bi bi-trash3-fill"></i> Delete Trip</div>
-        </div>
-      </div>
-
-  <script>
-    
-    const trip = {{ trip|safe }};
-    
-    var authorname = "{{author.name|safe}}";
-  
-    
-    $('#btnAddSighting').on("click", function(){
-      $.ajax({
-        type: "POST",
-        url: "/sighting/" + authorname + "/" + "-1/",
-        data: JSON.stringify({}),
-        success: function (response) {
-          // prints the response from the server
-          console.log("AJAX " + response)
-          window.location = "https://group-final-project-clean-2-uthci.uthci.repl.co/sighting/" + authorname + "/" + response + "/"
- 
-        }
-    });
-  });
-
-    function create_card(species) {
-      var new_card = card.clone(true);
-      $(new_card.find("img")[0]).attr("src", species.image_url);
-      $(new_card).attr("species_id", species.id + "");
-      $(new_card.find("h5")[0]).text(species.name);
-      $(new_card.find("i")[0]).text(species.sciname);
-      $("#search-overlay").append(new_card);
-    }
-
-  // d = "{{date|safe}}".split("-");
-  // t = "{{time|safe}}".split(":");
-  
-  // date = new Date(d[0], d[1] - 1 , d[2], t[0], t[1], t[2]);
-  
-  
-  // $('#input-date').datepicker({
-  //     format: "mm/dd/yyyy",
-  // }).datepicker("setValue", date);
-  
-  // $('#input-time').timepicker("setTime", new Date(date.getTime()));
-
-    $('#btnDelete').click(function() {
-      delete_trip();
-    });
-
-    function delete_trip() {
-      if(!confirm("Are you sure you want to delete this trip?"))
-        return;
-
-      var authorname = "{{author.name|safe}}"
-      var id = "{{id|safe}}"
-      // INCOMPLETE: also need to go through and delete sightings associated with trip
-      $.ajax({
-        type: "POST",
-        url: "/trip/" + authorname + "/" + id + "/",
-        data:  JSON.stringify({"delete": null}),
-        success: function (response) {
-            history.back();
-          }
-      });
       
-    }
-   
+        <div class="container-padding">
+            <div class="col-md" align="center" style="vertical-align: middle;">
+                <div id="sightlist"> </div>                
+            </div>   
+        </div>
+        
+
+        <!-- NOTES (?) -->
+        <div class="input-group mb-3" style="padding-top: 40px;">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="field-name">Notes &ensp;</span>
+            </div>
+            <textarea class="form-control" style="font-size: 1.5rem;" id="input-notes" placeholder="add notes..."
+                aria-label="Notes" aria-describedby="field-name"></textarea>
+        </div>
+
+        <!-- DELETE TRIP BUTTON -->
+        <div class="row" style="padding-top: 50px;">
+            <div class="col-12" align="center">
+                <div id="btnDelete" class="btn btn-light" style="display: block; font-size: 1.5rem"> <i
+                        class="bi bi-trash3-fill"></i> Delete Trip</div>
+            </div>
+        </div>
+
+        <!-- ADD SIGHTING BUTTON -->
+        <div class="row fixed-row-bottom" style="padding-top: 50px;">
+            <div class="col-md" align="right">
+                <button id="btnAddSighting" type="button" class="btn btn-circle btn-xl">
+                    <h1 style=" font-weight: bold;"> + </h1>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        const triptmp = {{ trip| safe }};
+        var desc = triptmp.desc;
+        var name = triptmp.name;
+        var id = "{{trip.id|safe}}"
+        const sightings = {{ trip.sightings|safe }}
+
+        var authorname = "{{author.name|safe}}";
+
+        $("#input-sighting").val(name);
+        $("#input-notes").val(desc);
+
+        $('#btnAddSighting').on("click", function () {
+            $.ajax({
+                type: "POST",
+                url: "/sighting/" + authorname + "/" + "-1/",
+                data: JSON.stringify({}),
+                success: function (response) {
+                    // prints the response from the server
+                    console.log("AJAX " + response)
+                    attachAndLoad(response);
+                }
+            });
+        });
+
+        function attachAndLoad(sid) {
+          name = $("#input-sighting").val();
+          desc = $("#input-notes").val();
+          
+          console.log("/trip/"+authorname+"/" + id +"/");
+          $.ajax({
+              type: "POST",
+              url: "/trip/"+authorname+"/" + id +"/",
+              data: JSON.stringify({name:name, desc:desc, sighting_id:sid}),
+              success: function (response) {
+                // prints the response from the server
+                console.log("AJAX " + response);
+
+                window.location = "https://group-final-project-clean-2-uthci.uthci.repl.co/sighting/" + authorname + "/" + sid + "/"
+              }
+          });
+        }
+
+        var card = $('<div class="row jscard" sighting_id=""> <div class="card ru-card"><div class="row no-gutter" style="padding: 0px;"><div class="col-3"><img class="card-img" src="url" alt="Sighting Card"></div><div class="col"><div class="card-body"><h5 class="card-title ru-ctitle">name</h5><p class="card-text ru-csub"><i>sciname</i></p></div></div></div></div></div>');
+
+
+        function create_card(species) {
+            var new_card = card.clone(true);
+            $(new_card.find("img")[0]).attr("src", sighting.image_url);
+            $(new_card).attr("sighting_id", sighting.id + "");
+            $(new_card.find("h5")[0]).text(sighting.name);
+            $(new_card.find("i")[0]).text(sighting.sciname);
+            $("#search-overlay").append(new_card);
+        }
+
+        // d = "{{date|safe}}".split("-");
+        // t = "{{time|safe}}".split(":");
+
+        // date = new Date(d[0], d[1] - 1 , d[2], t[0], t[1], t[2]);
+
+
+        // $('#input-date').datepicker({
+        //     format: "mm/dd/yyyy",
+        // }).datepicker("setValue", date);
+
+        // $('#input-time').timepicker("setTime", new Date(date.getTime()));
+
+        $('#btnDelete').click(function () {
+            delete_trip();
+        });
+
+        function delete_trip() {
+            if (!confirm("Are you sure you want to delete this trip?"))
+                return;
+
+            var authorname = "{{author.name|safe}}"
+            var id = "{{trip.id|safe}}"
+            // INCOMPLETE: also need to go through and delete sightings associated with trip
+            $.ajax({
+                type: "POST",
+                url: "/trip/" + authorname + "/" + id + "/",
+                data: JSON.stringify({ "delete": null }),
+                success: function (response) {
+                    history.back();
+                }
+            });
+
+        }
+
+        var map;
+        var infowindow = null;
+        function pin(sighting) {
+          const marker = new google.maps.Marker({
+            position: { lat: sighting.latitude, lng: sighting.longitude },
+            map: map
+          });
+          marker.addListener("click", (event) => {
+            //TODO: change this (either put some info in the window or scroll to the entry on the list)
+            if(infowindow) infowindow.close();
+            infowindow = new google.maps.InfoWindow({
+              content: ""
+            });
+            infowindow.open({
+              anchor: marker,
+              map,
+              shouldFocus: false,
+            });
+          });
+        }
+      
+        function initMap() {
+          map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 4,
+            center: {lat:0, lng:0},
+          });
+            
+          google.maps.event.addListener(map, "click", (event) => {
+            if(infowindow) infowindow.close();
+            infowindow = null;
+          });
+
+          var bounds = new google.maps.LatLngBounds();
+          for(var i=0; i<sightings.length; i++) {
+            const s = sightings[i];
+            pin(s);
+            bounds.extend({lat: s.latitude, lng: s.longitude});
+          }
+          if(sightings.length>0)
+            map.fitBounds(bounds, 25);
+        }
+
+        $('#btnEdit').click(function() {
+          var bDisabled;
+          if (this.getAttribute("state") === "lock"){
+            console.log("unlocking...");
+            this.setAttribute("state", "unlock")
+            this.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+            bDisabled = false;
+            document.querySelector("#btnDelete").style.display = 'block';
+          }
+          else {
+            console.log("locking...");
+            save();
+            this.setAttribute("state", "lock")
+            this.innerHTML = '<i class="bi bi-pencil-fill"></i>';
+            bDisabled = true;
+
+            document.querySelector("#btnDelete").style.display = 'none';
+          }
+          console.log(this.getAttribute("state"));
+          var inputs = document.getElementsByTagName("input"); 
+          for (var i = 0; i < inputs.length; i++) { 
+              inputs[i].disabled = bDisabled;
+          } 
     
-  </script>
+          var textareas = document.getElementsByTagName("textarea"); 
+          for (var i = 0; i < textareas.length; i++) { 
+              textareas[i].disabled = bDisabled;
+          }
+        });
 
-  </body>
+         $('#btnBack').click(function() {
+            var authorname = "{{author.name|safe}}";
+            history.back();
+         });
+
+        function save() {
+          name = $("#input-sighting").val();
+          desc = $("#input-notes").val();
+          
+          var data_to_send = {
+            "name" : name,
+            "desc": desc
+          };
+    
+          // This ajax request sends a POST request to the server
+          // https://api.jquery.com/jquery.ajax/
+    
+          var authorname = "{{author.name|safe}}"
+          var id = "{{trip.id|safe}}"
+    
+          $.ajax({
+            type: "POST",
+            url: "/trip/" + authorname + "/" + id + "/",
+            data: JSON.stringify(data_to_send),
+            success: function (response) {
+              // prints the response from the server
+            }
+          });
+        }
+      
+        function dosight(id) {
+          console.log("do: "+id);
+          window.location.href = "/sighting/{{author.name}}/"+id;
+        }
+          
+      	function editsight(id) {
+      		dosight(id);
+      	}
+      	
+      	function delsight(id) {
+      
+          if(!confirm("Are you sure you want to delete this sighting?"))
+            return;
+          
+          var authorname = "{{author.name|safe}}"
+          $.ajax({
+            type: "POST",
+            url: "/sighting/" + authorname + "/" + id + "/",
+            data:  JSON.stringify({"delete": null}),
+            success: function (response) {
+                if(infowindow) infowindow.close();
+            		infowindow = null;
+            		markers[""+id].setMap(null);
+            		delete markers[""+id];
+              }
+          });
+      		
+      		console.log("del: "+id);
+          document.location.reload(true);
+      	}
+      
+        function entryDOM(id, top, bot, img, click, edit, del, width="400px") {
+        return '<div id="'+id+'" style="width: '+width+';" onclick="'+click+'">'+
+        '<img src="'+img+'" class="rowimg">'+
+        '<div id="top-'+id+'" class="subrow" style="border-width: 2px 2px 2px 2px;">'+
+        '<span id="toptxt-'+id+'" class="subrowtxt">'+top+'</span>'+
+        '<button id="edit-'+id+'" class="subrowbutt" onclick="'+
+        edit+';event.stopPropagation()">&#9999;</span>'+
+        '</div>'+
+        '<div id="bot-'+id+'" class="subrow" style="border-width: 0 2px 2px 2px;">'+
+        '<span id="bottxt-'+id+'" class="subrowtxt">'+bot+'</span>'+
+        '<button id="del-'+id+'" class="subrowbutt" onclick="'+
+          del+';event.stopPropagation()">&#10060;</span>'+
+        '</div>'+
+        '</div>'
+      }
+
+      var list = $("#sightlist");
+      
+      function populate_list() {
+        for(var i=0; i<sightings.length; i++) {
+          const s = sightings[i];
+            list.append(entryDOM(
+              "s-"+i,
+              s.name,          
+              s.species,
+      				s.image,
+      				"dosight("+s.id+")",
+              "editsight("+s.id+")",
+              "delsight("+s.id+")",
+               "100%"));
+        }
+      } populate_list();
+
+    $(window).bind("pageshow", function(event) {
+      if (event.originalEvent.persisted) {
+          window.location.reload() 
+      }
+    });
+
+    </script>
+
+</body>
+
 </html>
-
